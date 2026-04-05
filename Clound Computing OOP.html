@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>EduCloud & OOP — Bahan Ajar Interaktif</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --white:#ffffff;--bg:#F0F4FF;--bg2:#E8EFFE;
+  --blue:#3B82F6;--blue-dark:#1D4ED8;--blue-light:#EFF6FF;--blue-soft:#DBEAFE;
+  --teal:#0EA5E9;--teal-light:#E0F2FE;
+  --orange:#F97316;--orange-light:#FFF7ED;--orange-soft:#FED7AA;
+  --purple:#8B5CF6;--purple-light:#F5F3FF;--purple-soft:#DDD6FE;
+  --green:#10B981;--green-light:#ECFDF5;--green-soft:#A7F3D0;
+  --red:#EF4444;--red-light:#FEF2F2;--red-soft:#FECACA;
+  --yellow:#F59E0B;--yellow-light:#FFFBEB;--yellow-soft:#FDE68A;
+  --pink:#EC4899;--pink-light:#FDF2F8;
+  --text:#1E293B;--text2:#475569;--text3:#94A3B8;
+  --border:#E2E8F0;--shadow:0 4px 24px rgba(59,130,246,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;font-size:15px;line-height:1.6;}
+
+/* ── HEADER ── */
+.app-header{
+  background:linear-gradient(135deg,#1D4ED8 0%,#3B82F6 40%,#0EA5E9 100%);
+  color:#fff;padding:0;position:relative;overflow:hidden;
+}
+.app-header::before{
+  content:'';position:absolute;top:-80px;right:-80px;
+  width:320px;height:320px;border-radius:50%;
+  background:rgba(255,255,255,0.08);pointer-events:none;
+}
+.app-header::after{
+  content:'';position:absolute;bottom:-60px;left:60px;
+  width:200px;height:200px;border-radius:50%;
+  background:rgba(255,255,255,0.05);pointer-events:none;
+}
+.header-inner{max-width:1100px;margin:0 auto;padding:36px 24px;position:relative;z-index:1;}
+.header-top{display:flex;align-items:center;gap:16px;margin-bottom:14px;}
+.header-logo{width:52px;height:52px;background:rgba(255,255,255,0.2);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;backdrop-filter:blur(10px);}
+.header-school{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:0.85;}
+.header-title{font-size:clamp(22px,5vw,40px);font-weight:900;line-height:1.15;letter-spacing:-0.5px;}
+.header-title span{color:#FDE68A;}
+.header-sub{opacity:0.85;font-size:15px;margin-top:6px;}
+.header-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;}
+.chip{padding:5px 14px;border-radius:20px;background:rgba(255,255,255,0.18);font-size:12px;font-weight:700;letter-spacing:0.5px;backdrop-filter:blur(8px);}
+.chip.yellow{background:#F59E0B;color:#fff;}
+
+/* ── NAV ── */
+.app-nav{
+  background:#fff;border-bottom:2px solid var(--border);
+  display:flex;overflow-x:auto;scrollbar-width:none;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 12px rgba(59,130,246,0.08);
+}
+.app-nav::-webkit-scrollbar{display:none;}
+.nav-item{
+  flex-shrink:0;display:flex;align-items:center;gap:7px;
+  padding:0 20px;height:54px;border:none;background:none;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;
+  color:var(--text3);cursor:pointer;border-bottom:3px solid transparent;
+  transition:all .22s;white-space:nowrap;letter-spacing:0.3px;
+}
+.nav-item:hover{color:var(--blue);background:var(--blue-light);}
+.nav-item.active{color:var(--blue-dark);border-bottom-color:var(--blue);}
+.nav-item .ni{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.ni-cloud{background:var(--teal-light);color:var(--teal);}
+.ni-bulb{background:var(--orange-light);color:var(--orange);}
+.ni-layer{background:var(--purple-light);color:var(--purple);}
+.ni-code{background:var(--green-light);color:var(--green);}
+.ni-quiz{background:var(--yellow-light);color:var(--yellow);}
+.ni-home{background:var(--blue-light);color:var(--blue);}
+
+/* ── LAYOUT ── */
+.page{display:none;max-width:1100px;margin:0 auto;padding:28px 20px 70px;}
+.page.active{display:block;animation:slideUp .35s ease;}
+@keyframes slideUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── PAGE HERO ── */
+.page-hero{
+  border-radius:20px;padding:30px 32px;margin-bottom:28px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+}
+.ph-blue{background:linear-gradient(135deg,#EFF6FF,#DBEAFE);}
+.ph-orange{background:linear-gradient(135deg,#FFF7ED,#FED7AA);}
+.ph-purple{background:linear-gradient(135deg,#F5F3FF,#DDD6FE);}
+.ph-green{background:linear-gradient(135deg,#ECFDF5,#A7F3D0);}
+.ph-icon{width:72px;height:72px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0;}
+.ph-icon.blue{background:var(--blue);box-shadow:0 8px 20px rgba(59,130,246,0.35);}
+.ph-icon.orange{background:var(--orange);box-shadow:0 8px 20px rgba(249,115,22,0.35);}
+.ph-icon.purple{background:var(--purple);box-shadow:0 8px 20px rgba(139,92,246,0.35);}
+.ph-icon.green{background:var(--green);box-shadow:0 8px 20px rgba(16,185,129,0.35);}
+.ph-text h2{font-size:clamp(18px,3.5vw,26px);font-weight:900;color:var(--text);}
+.ph-text p{color:var(--text2);font-size:14px;margin-top:4px;}
+.ph-text .bab-tag{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+
+/* ── SECTION TITLE ── */
+.sec-head{display:flex;align-items:center;gap:10px;margin:28px 0 14px;}
+.sec-head .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.sec-head h3{font-size:17px;font-weight:800;color:var(--text);}
+.dot-blue{background:var(--blue);}
+.dot-orange{background:var(--orange);}
+.dot-purple{background:var(--purple);}
+.dot-green{background:var(--green);}
+.dot-yellow{background:var(--yellow);}
+
+/* ── CARDS GRID ── */
+.cards3{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:20px;}
+.cards2{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;margin-bottom:20px;}
+.info-card{
+  background:#fff;border-radius:16px;padding:22px;
+  border:1.5px solid var(--border);
+  box-shadow:0 2px 12px rgba(0,0,0,0.05);
+  transition:all .25s;
+}
+.info-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(59,130,246,0.12);}
+.ic-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.ic-badge{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.ic-badge.blue{background:var(--blue-soft);color:var(--blue-dark);}
+.ic-badge.orange{background:var(--orange-soft);color:#C2410C;}
+.ic-badge.purple{background:var(--purple-soft);color:#6D28D9;}
+.ic-badge.green{background:var(--green-soft);color:#065F46;}
+.ic-badge.yellow{background:var(--yellow-soft);color:#92400E;}
+.ic-badge.red{background:var(--red-soft);color:#991B1B;}
+.ic-badge.teal{background:var(--teal-light);color:#0369A1;}
+.ic-badge.pink{background:#FCE7F3;color:#9D174D;}
+.info-card h4{font-size:15px;font-weight:800;color:var(--text);}
+.info-card p{font-size:13.5px;color:var(--text2);line-height:1.65;}
+.info-card .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.tag-blue{background:var(--blue-soft);color:var(--blue-dark);}
+.tag-orange{background:var(--orange-soft);color:#C2410C;}
+.tag-green{background:var(--green-soft);color:#065F46;}
+.tag-purple{background:var(--purple-soft);color:#6D28D9;}
+.tag-yellow{background:var(--yellow-soft);color:#92400E;}
+
+/* ── CALLOUT ── */
+.callout{border-radius:14px;padding:18px 20px;margin:14px 0;display:flex;gap:14px;align-items:flex-start;}
+.callout-blue{background:var(--blue-light);border:1.5px solid #BFDBFE;}
+.callout-orange{background:var(--orange-light);border:1.5px solid #FED7AA;}
+.callout-green{background:var(--green-light);border:1.5px solid var(--green-soft);}
+.callout-purple{background:var(--purple-light);border:1.5px solid var(--purple-soft);}
+.callout-yellow{background:var(--yellow-light);border:1.5px solid var(--yellow-soft);}
+.callout-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.callout-body h4{font-size:14px;font-weight:800;margin-bottom:5px;}
+.callout-body p,.callout-body li{font-size:13.5px;color:var(--text2);line-height:1.65;}
+.callout-body ul{padding-left:16px;}
+.callout-blue .callout-body h4{color:var(--blue-dark);}
+.callout-orange .callout-body h4{color:#C2410C;}
+.callout-green .callout-body h4{color:#065F46;}
+.callout-purple .callout-body h4{color:#6D28D9;}
+.callout-yellow .callout-body h4{color:#92400E;}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto;margin:14px 0;border-radius:14px;border:1.5px solid var(--border);background:#fff;box-shadow:0 2px 10px rgba(0,0,0,0.04);}
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+thead tr{background:linear-gradient(135deg,var(--blue) 0%,var(--teal) 100%);}
+th{color:#fff;padding:13px 16px;text-align:left;font-size:12px;font-weight:800;letter-spacing:0.5px;}
+td{padding:12px 16px;border-top:1px solid var(--border);color:var(--text2);vertical-align:top;}
+tr:hover td{background:#F8FAFF;}
+td strong{color:var(--text);}
+
+/* ── STEPS (OOP Tutorial) ── */
+.steps{display:flex;flex-direction:column;gap:0;margin:14px 0;}
+.step-item{display:flex;gap:0;position:relative;}
+.step-left{display:flex;flex-direction:column;align-items:center;width:48px;flex-shrink:0;}
+.step-num{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:800;color:#fff;flex-shrink:0;z-index:1;
+}
+.step-line{width:2px;flex:1;min-height:20px;margin:2px 0;}
+.step-item:last-child .step-line{display:none;}
+.step-content{
+  flex:1;background:#fff;border:1.5px solid var(--border);
+  border-radius:14px;padding:18px 20px;margin-bottom:14px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.step-content h4{font-size:15px;font-weight:800;margin-bottom:6px;}
+.step-content p{font-size:13.5px;color:var(--text2);line-height:1.65;}
+.step-content .note{
+  display:inline-flex;align-items:center;gap:6px;margin-top:10px;
+  padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;
+}
+.note-blue{background:var(--blue-soft);color:var(--blue-dark);}
+.note-green{background:var(--green-soft);color:#065F46;}
+
+/* ── CODE BLOCK ── */
+.code-wrap{margin:12px 0;border-radius:14px;overflow:hidden;border:1.5px solid #E2E8F0;box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+.code-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;background:#1E293B;
+}
+.code-header .dots{display:flex;gap:6px;}
+.code-header .dots span{width:12px;height:12px;border-radius:50%;}
+.cd1{background:#EF4444;} .cd2{background:#F59E0B;} .cd3{background:#10B981;}
+.code-header .lang-tag{
+  font-size:11px;font-weight:700;letter-spacing:1px;
+  background:rgba(255,255,255,0.1);color:#94A3B8;
+  padding:3px 10px;border-radius:6px;font-family:'Fira Code',monospace;
+}
+.code-body{background:#0F172A;padding:20px;overflow-x:auto;}
+pre{font-family:'Fira Code',monospace;font-size:13px;line-height:1.75;white-space:pre;}
+.kw{color:#F472B6;} .fn{color:#34D399;} .cl{color:#60A5FA;}
+.st{color:#FBBF24;} .cm{color:#475569;font-style:italic;}
+.nm{color:#A78BFA;} .num{color:#FB923C;} .op{color:#E2E8F0;}
+.copy-btn{
+  padding:5px 12px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+  border-radius:6px;color:#94A3B8;font-size:11px;cursor:pointer;font-family:'Fira Code',monospace;
+  transition:.2s;
+}
+.copy-btn:hover{background:rgba(255,255,255,0.2);color:#fff;}
+
+/* ── ACCORDION ── */
+.accordion{margin:8px 0;}
+.acc-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;background:#fff;border:1.5px solid var(--border);
+  border-radius:12px;cursor:pointer;transition:.2s;font-weight:700;font-size:14px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
+}
+.acc-head:hover{background:var(--blue-light);border-color:#BFDBFE;}
+.acc-head.open{background:var(--blue-light);border-color:var(--blue);color:var(--blue-dark);border-radius:12px 12px 0 0;}
+.acc-icon{transition:.3s;color:var(--text3);}
+.acc-head.open .acc-icon{transform:rotate(180deg);color:var(--blue);}
+.acc-body{display:none;background:#fff;border:1.5px solid var(--blue);border-top:none;border-radius:0 0 12px 12px;padding:16px 18px;}
+.acc-body.open{display:block;}
+.acc-body ul{padding-left:18px;display:flex;flex-direction:column;gap:7px;}
+.acc-body li{font-size:13.5px;color:var(--text2);line-height:1.6;}
+.acc-body li strong{color:var(--text);}
+
+/* ── CONCEPT FLOW ── */
+.cf-row{display:flex;align-items:flex-start;gap:14px;padding:14px;border-radius:12px;transition:.2s;margin-bottom:6px;}
+.cf-row:hover{background:#fff;}
+.cf-dot{
+  width:40px;height:40px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:15px;flex-shrink:0;color:#fff;
+}
+.cf-content h4{font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px;}
+.cf-content p{font-size:13.5px;color:var(--text2);line-height:1.6;}
+
+/* ── HOME MENU ── */
+.home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:20px 0;}
+.home-card{
+  background:#fff;border-radius:18px;padding:24px 20px;
+  border:2px solid var(--border);cursor:pointer;
+  transition:all .25s;text-align:center;
+  box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+.home-card:hover{transform:translateY(-5px);}
+.home-card .hc-emoji{font-size:38px;margin-bottom:12px;}
+.home-card h3{font-size:14px;font-weight:800;margin-bottom:5px;color:var(--text);}
+.home-card p{font-size:12.5px;color:var(--text2);line-height:1.55;}
+.home-card .hc-bar{height:4px;border-radius:2px;margin-top:14px;}
+.hc-blue{border-color:#BFDBFE;}.hc-blue:hover{border-color:var(--blue);box-shadow:0 8px 24px rgba(59,130,246,0.18);}
+.hc-blue .hc-bar{background:linear-gradient(90deg,var(--blue),var(--teal));}
+.hc-orange{border-color:#FED7AA;}.hc-orange:hover{border-color:var(--orange);box-shadow:0 8px 24px rgba(249,115,22,0.18);}
+.hc-orange .hc-bar{background:linear-gradient(90deg,var(--orange),#FBBF24);}
+.hc-purple{border-color:#DDD6FE;}.hc-purple:hover{border-color:var(--purple);box-shadow:0 8px 24px rgba(139,92,246,0.18);}
+.hc-purple .hc-bar{background:linear-gradient(90deg,var(--purple),var(--pink));}
+.hc-green{border-color:#A7F3D0;}.hc-green:hover{border-color:var(--green);box-shadow:0 8px 24px rgba(16,185,129,0.18);}
+.hc-green .hc-bar{background:linear-gradient(90deg,var(--green),var(--teal));}
+.hc-yellow{border-color:#FDE68A;}.hc-yellow:hover{border-color:var(--yellow);box-shadow:0 8px 24px rgba(245,158,11,0.18);}
+.hc-yellow .hc-bar{background:linear-gradient(90deg,var(--yellow),var(--orange));}
+
+/* ── SIMULATION ── */
+.sim-wrap{background:#fff;border-radius:18px;border:2px solid var(--border);overflow:hidden;margin:14px 0;box-shadow:0 4px 16px rgba(0,0,0,0.06);}
+.sim-top{
+  padding:14px 20px;display:flex;align-items:center;gap:10px;
+  border-bottom:1.5px solid var(--border);
+}
+.sim-top h4{font-weight:800;font-size:15px;color:var(--text);}
+.sim-top .sim-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.sim-body{padding:22px;}
+
+/* OOP Builder */
+.oop-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:700px){.oop-grid{grid-template-columns:1fr;}}
+.form-group{margin-bottom:14px;}
+.form-group label{display:block;font-size:12px;font-weight:800;color:var(--text3);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:6px;}
+.form-group input,.form-group select{
+  width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;
+  font-family:'Nunito',sans-serif;font-size:14px;color:var(--text);background:#fff;
+  outline:none;transition:.2s;
+}
+.form-group input:focus,.form-group select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,0.12);}
+.inline-row{display:flex;gap:8px;}
+.inline-row input{flex:1;}
+.btn{
+  padding:10px 18px;border-radius:10px;border:none;cursor:pointer;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;transition:.2s;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.btn-blue{background:var(--blue);color:#fff;box-shadow:0 4px 12px rgba(59,130,246,0.3);}
+.btn-blue:hover{background:var(--blue-dark);}
+.btn-orange{background:var(--orange);color:#fff;box-shadow:0 4px 12px rgba(249,115,22,0.3);}
+.btn-orange:hover{background:#EA580C;}
+.btn-green{background:var(--green);color:#fff;box-shadow:0 4px 12px rgba(16,185,129,0.3);}
+.btn-green:hover{background:#059669;}
+.btn-ghost{background:transparent;color:var(--text3);border:1.5px solid var(--border);}
+.btn-ghost:hover{background:var(--bg);color:var(--text);}
+.btn-full{width:100%;justify-content:center;padding:12px;}
+.pill-list{display:flex;flex-wrap:wrap;gap:6px;min-height:28px;}
+.pill{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;
+}
+.pill-prop{background:var(--blue-soft);color:var(--blue-dark);}
+.pill-meth{background:var(--green-soft);color:#065F46;}
+.pill .rm-x{cursor:pointer;opacity:.6;font-size:11px;}.pill .rm-x:hover{opacity:1;}
+
+/* Match Game */
+.match-cols{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:start;}
+@media(max-width:600px){.match-cols{grid-template-columns:1fr;}}
+.match-arrow{display:flex;align-items:center;justify-content:center;padding-top:60px;font-size:22px;color:var(--text3);}
+.match-item{
+  padding:12px 14px;border-radius:10px;border:2px solid var(--border);
+  font-size:13px;cursor:pointer;transition:.2s;font-weight:600;
+  background:#fff;margin-bottom:8px;
+}
+.match-scenario:hover,.match-scenario.sel{border-color:var(--blue);background:var(--blue-light);color:var(--blue-dark);}
+.match-svc{font-weight:800;text-align:center;font-size:13px;letter-spacing:.5px;}
+.match-svc.saas{border-color:#BFDBFE;color:var(--blue-dark);}
+.match-svc.saas:hover,.match-svc.saas.tgt{background:var(--blue-soft);border-color:var(--blue);}
+.match-svc.iaas{border-color:var(--orange-soft);color:#C2410C;}
+.match-svc.iaas:hover,.match-svc.iaas.tgt{background:var(--orange-soft);border-color:var(--orange);}
+.match-svc.paas{border-color:var(--purple-soft);color:#6D28D9;}
+.match-svc.paas:hover,.match-svc.paas.tgt{background:var(--purple-soft);border-color:var(--purple);}
+.match-item.matched-ok{border-color:var(--green)!important;background:var(--green-light)!important;color:#065F46!important;}
+.match-item.matched-bad{border-color:var(--red)!important;background:var(--red-light)!important;color:#991B1B!important;}
+
+/* Cloud Type Drag */
+.ct-items{display:flex;flex-direction:column;gap:8px;}
+.ct-item{padding:12px 14px;border-radius:10px;border:2px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:space-between;font-size:13.5px;font-weight:600;}
+.ct-opts{display:flex;gap:7px;flex-wrap:wrap;}
+.ct-btn{padding:6px 14px;border-radius:20px;border:2px solid;cursor:pointer;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;transition:.2s;}
+.ct-btn.pub{border-color:var(--blue);color:var(--blue);background:#fff;}.ct-btn.pub:hover{background:var(--blue);color:#fff;}
+.ct-btn.pri{border-color:var(--orange);color:var(--orange);background:#fff;}.ct-btn.pri:hover{background:var(--orange);color:#fff;}
+.ct-btn.hyb{border-color:var(--green);color:var(--green);background:#fff;}.ct-btn.hyb:hover{background:var(--green);color:#fff;}
+.ct-btn.ok{background:var(--green)!important;color:#fff!important;border-color:var(--green)!important;}
+.ct-btn.bad{background:var(--red)!important;color:#fff!important;border-color:var(--red)!important;}
+
+/* Result Msg */
+.result-msg-box{
+  margin-top:14px;padding:12px 16px;border-radius:10px;
+  font-size:14px;font-weight:700;text-align:center;display:none;
+}
+.result-msg-box.show{display:block;}
+.rmb-ok{background:var(--green-light);border:1.5px solid var(--green-soft);color:#065F46;}
+.rmb-bad{background:var(--red-light);border:1.5px solid var(--red-soft);color:#991B1B;}
+.rmb-info{background:var(--blue-light);border:1.5px solid #BFDBFE;color:var(--blue-dark);}
+
+/* ── LATIHAN (Exercise) ── */
+.exer-wrap{margin:14px 0;}
+.exer-item{background:#fff;border:2px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden;}
+.exer-head{padding:14px 18px;font-weight:800;font-size:14px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;gap:8px;}
+.exer-q{padding:16px 18px;}
+.exer-q p{font-size:14px;font-weight:600;color:var(--text);margin-bottom:12px;}
+.exer-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+@media(max-width:500px){.exer-opts{grid-template-columns:1fr;}}
+.exer-opt{
+  padding:11px 14px;border:2px solid var(--border);border-radius:10px;
+  cursor:pointer;font-size:13.5px;font-weight:600;color:var(--text2);
+  background:#fff;text-align:left;transition:.2s;font-family:'Nunito',sans-serif;
+  display:flex;align-items:center;gap:8px;
+}
+.exer-opt:hover:not(:disabled){border-color:var(--blue);color:var(--blue-dark);background:var(--blue-light);}
+.exer-opt.correct{border-color:var(--green)!important;background:var(--green-light)!important;color:#065F46!important;}
+.exer-opt.wrong{border-color:var(--red)!important;background:var(--red-light)!important;color:#991B1B!important;}
+.exer-opt .opt-ltr{
+  width:24px;height:24px;border-radius:6px;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;flex-shrink:0;
+}
+.exer-feedback{padding:10px 18px 14px;font-size:13px;font-weight:700;display:none;}
+.exer-feedback.show{display:block;}
+.ef-ok{color:#065F46;}.ef-bad{color:#991B1B;}
+.exer-score-row{padding:10px 18px;background:var(--bg);border-top:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text3);}
+
+/* ── QUIZ ── */
+.quiz-outer{max-width:720px;margin:0 auto;}
+.quiz-start-card{
+  background:#fff;border-radius:20px;border:2px solid var(--border);
+  padding:40px;text-align:center;box-shadow:var(--shadow);
+}
+.quiz-start-card h2{font-size:26px;font-weight:900;color:var(--text);margin-bottom:8px;}
+.quiz-start-card p{color:var(--text2);font-size:15px;max-width:440px;margin:0 auto 28px;}
+.qsc-stats{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:28px;}
+.qss{padding:16px 24px;border-radius:14px;background:var(--bg);border:2px solid var(--border);text-align:center;}
+.qss-num{font-size:26px;font-weight:900;color:var(--blue);}
+.qss-lbl{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+.qss:nth-child(2) .qss-num{color:var(--orange);}
+.qss:nth-child(3) .qss-num{color:var(--green);}
+.start-quiz-btn{
+  padding:16px 48px;background:linear-gradient(135deg,var(--blue),var(--teal));
+  color:#fff;border:none;border-radius:14px;font-family:'Nunito',sans-serif;
+  font-size:17px;font-weight:800;cursor:pointer;
+  box-shadow:0 8px 24px rgba(59,130,246,0.35);transition:.25s;
+}
+.start-quiz-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(59,130,246,0.45);}
+
+.quiz-card{background:#fff;border-radius:20px;border:2px solid var(--border);overflow:hidden;box-shadow:var(--shadow);}
+.quiz-top-bar{
+  padding:14px 22px;border-bottom:1.5px solid var(--border);
+  display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;gap:10px;
+}
+.qtb-left{font-size:13px;font-weight:700;color:var(--text2);}
+.qtb-center{text-align:center;}
+.timer-display{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 20px;border-radius:30px;font-size:20px;font-weight:900;
+  background:var(--green-light);color:#065F46;border:2px solid var(--green-soft);
+  font-family:'Fira Code',monospace;
+}
+.timer-display.warn{background:var(--red-light);color:var(--red);border-color:var(--red-soft);animation:pulse .6s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+.qtb-right{text-align:right;font-size:13px;font-weight:700;}
+.score-live{display:inline-flex;align-items:center;gap:5px;color:var(--green);}
+.progress-track{height:6px;background:var(--bg);}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));transition:width .5s;}
+.quiz-body{padding:28px;}
+.q-cat-pill{
+  display:inline-block;padding:4px 12px;border-radius:20px;
+  font-size:11px;font-weight:800;letter-spacing:.5px;margin-bottom:12px;
+}
+.qcp-cloud{background:var(--teal-light);color:#0369A1;}
+.qcp-oop{background:var(--green-light);color:#065F46;}
+.q-text{font-size:17px;font-weight:800;color:var(--text);line-height:1.5;margin-bottom:22px;}
+.q-options{display:flex;flex-direction:column;gap:9px;}
+.q-opt{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 16px;border:2px solid var(--border);border-radius:12px;
+  cursor:pointer;transition:.2s;font-size:14.5px;font-weight:600;color:var(--text2);
+  background:#fff;font-family:'Nunito',sans-serif;text-align:left;
+}
+.q-opt:hover:not(:disabled){border-color:var(--blue);background:var(--blue-light);color:var(--blue-dark);}
+.q-opt.correct{border-color:var(--green)!important;background:var(--green-light)!important;color:#065F46!important;}
+.q-opt.wrong{border-color:var(--red)!important;background:var(--red-light)!important;color:#991B1B!important;}
+.q-opt:disabled{cursor:not-allowed;}
+.q-ltr{
+  width:30px;height:30px;border-radius:8px;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800;flex-shrink:0;
+  transition:.2s;
+}
+.quiz-bottom{padding:16px 22px;border-top:1.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;min-height:64px;}
+.q-feedback{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.qf-ok{color:#065F46;}.qf-bad{color:#991B1B;}
+.next-q-btn{
+  padding:11px 28px;background:linear-gradient(135deg,var(--blue),var(--teal));
+  color:#fff;border:none;border-radius:10px;font-family:'Nunito',sans-serif;
+  font-size:14px;font-weight:800;cursor:pointer;transition:.2s;display:none;
+}
+.next-q-btn.show{display:block;animation:fadeIn .3s ease;}
+.next-q-btn:hover{transform:scale(1.04);}
+
+/* RESULT */
+.result-card{background:#fff;border-radius:20px;border:2px solid var(--border);padding:36px;text-align:center;box-shadow:var(--shadow);display:none;}
+.result-card.show{display:block;animation:slideUp .4s ease;}
+.score-circle-wrap{position:relative;width:160px;height:160px;margin:0 auto 20px;}
+.score-circle-wrap svg{transform:rotate(-90deg);}
+.score-circle-wrap .circle-bg{fill:none;stroke:var(--bg);stroke-width:10;}
+.score-circle-wrap .circle-fg{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1.2s ease;}
+.score-center-text{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;
+}
+.score-center-text .scn{font-size:32px;font-weight:900;font-family:'Fira Code',monospace;}
+.score-center-text .scs{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1px;}
+.grade-badge{
+  display:inline-block;padding:8px 28px;border-radius:30px;
+  font-size:28px;font-weight:900;margin:8px 0;letter-spacing:1px;
+}
+.grade-A{background:var(--green-light);color:#065F46;border:2px solid var(--green-soft);}
+.grade-B{background:var(--blue-light);color:var(--blue-dark);border:2px solid #BFDBFE;}
+.grade-C{background:var(--yellow-light);color:#92400E;border:2px solid var(--yellow-soft);}
+.grade-D{background:var(--orange-light);color:#C2410C;border:2px solid var(--orange-soft);}
+.grade-E{background:var(--red-light);color:#991B1B;border:2px solid var(--red-soft);}
+.result-msg{font-size:15px;color:var(--text2);margin-bottom:24px;}
+.result-stats-row{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:24px;}
+.rs-box{padding:16px 22px;border-radius:14px;background:var(--bg);border:2px solid var(--border);}
+.rs-num{font-size:24px;font-weight:900;font-family:'Fira Code',monospace;}
+.rs-lbl{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+.rs-c{color:var(--green);}.rs-w{color:var(--red);}.rs-p{color:var(--blue);}
+.restart-btn{
+  padding:14px 36px;background:linear-gradient(135deg,var(--blue),var(--teal));
+  color:#fff;border:none;border-radius:12px;font-family:'Nunito',sans-serif;
+  font-size:15px;font-weight:800;cursor:pointer;margin:0 6px;transition:.2s;
+  box-shadow:0 6px 18px rgba(59,130,246,0.3);
+}
+.restart-btn:hover{transform:translateY(-2px);}
+.review-tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:16px;}
+.review-tbl th{background:var(--blue);color:#fff;padding:10px 12px;text-align:left;}
+.review-tbl td{padding:10px 12px;border-top:1px solid var(--border);vertical-align:top;color:var(--text2);}
+.rev-ok{color:var(--green);font-weight:700;}.rev-bad{color:var(--red);font-weight:700;}
+
+/* ── DIVIDER ── */
+.divider{height:1.5px;background:var(--border);margin:24px 0;border-radius:1px;}
+
+/* ── SCROLL TO TOP ── */
+#scrollTop{
+  position:fixed;bottom:24px;right:24px;
+  width:44px;height:44px;border-radius:12px;
+  background:var(--blue);color:#fff;border:none;cursor:pointer;
+  font-size:17px;box-shadow:0 4px 16px rgba(59,130,246,0.4);
+  display:none;align-items:center;justify-content:center;
+  transition:.2s;z-index:200;
+}
+#scrollTop.show{display:flex;}
+#scrollTop:hover{background:var(--blue-dark);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .page-hero{padding:20px;}
+  .quiz-body{padding:18px;}
+  .quiz-top-bar{grid-template-columns:1fr 1fr;}
+  .qtb-center{grid-column:1/-1;order:-1;}
+  .q-text{font-size:15px;}
+  .result-card{padding:22px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="app-header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="header-logo">🖥️</div>
+      <div>
+        <div class="header-school">Pelajaran TIK BY MUHAMMAD NOPRAN</div>
+      </div>
+    </div>
+    <h1 class="header-title">Cloud Computing &amp; <span>OOP PHP</span></h1>
+    <p class="header-sub">Bahan Ajar Interaktif Berbasis Modul — Belajar Sambil Bermain 🚀</p>
+    <div class="header-chips">
+      <div class="chip">☁️ 3 Bab Cloud</div>
+      <div class="chip">💻 1 Bab OOP</div>
+      <div class="chip">🎮 4 Simulasi</div>
+      <div class="chip yellow">🏆 25 Soal Kuis</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="app-nav" id="mainNav">
+  <button class="nav-item active" onclick="showPage('home')"><div class="ni ni-home">🏠</div>Beranda</button>
+  <button class="nav-item" onclick="showPage('bab1')"><div class="ni ni-cloud">☁️</div>BAB 1 — Pengenalan</button>
+  <button class="nav-item" onclick="showPage('bab2')"><div class="ni ni-bulb">💡</div>BAB 2 — Konsep</button>
+  <button class="nav-item" onclick="showPage('bab3')"><div class="ni ni-layer">🧩</div>BAB 3 — Layanan</button>
+  <button class="nav-item" onclick="showPage('bab4')"><div class="ni ni-code">💻</div>BAB 4 — OOP PHP</button>
+  <button class="nav-item" onclick="showPage('kuis')"><div class="ni ni-quiz">🏆</div>Kuis Utama</button>
+</nav>
+
+<!-- ===================== HOME ===================== -->
+<div id="home" class="page active">
+  <div class="page-hero ph-blue">
+    <div class="ph-icon blue">🎓</div>
+    <div class="ph-text">
+      <div class="bab-tag" style="color:var(--blue)">SELAMAT DATANG</div>
+      <h2>EduTech Learning Platform</h2>
+      <p>Pilih bab di bawah untuk mulai belajar. Setiap bab dilengkapi materi, simulasi interaktif, latihan soal, dan kuis!</p>
+    </div>
+  </div>
+  <div class="sec-head"><div class="dot dot-blue"></div><h3>Pilih Materi</h3></div>
+  <div class="home-grid">
+    <div class="home-card hc-blue" onclick="showPage('bab1')">
+      <div class="hc-emoji">☁️</div>
+      <h3>BAB 1 — Pengenalan Cloud Computing</h3>
+      <p>Definisi, fungsi, cara kerja, manfaat & penyedia layanan cloud</p>
+      <div class="hc-bar"></div>
+    </div>
+    <div class="home-card hc-orange" onclick="showPage('bab2')">
+      <div class="hc-emoji">💡</div>
+      <h3>BAB 2 — Konsep Cloud Computing</h3>
+      <p>7 konsep utama sistem komputasi awan beserta contoh nyata</p>
+      <div class="hc-bar"></div>
+    </div>
+    <div class="home-card hc-purple" onclick="showPage('bab3')">
+      <div class="hc-emoji">🧩</div>
+      <h3>BAB 3 — Layanan Cloud</h3>
+      <p>SaaS, IaaS, PaaS — definisi, karakteristik, dan perbandingan</p>
+      <div class="hc-bar"></div>
+    </div>
+    <div class="home-card hc-green" onclick="showPage('bab4')">
+      <div class="hc-emoji">💻</div>
+      <h3>BAB 4 — Object Oriented Programming</h3>
+      <p>Class, Object, Properties, Methods, dan kode PHP OOP langkah demi langkah</p>
+      <div class="hc-bar"></div>
+    </div>
+    <div class="home-card hc-yellow" onclick="showPage('kuis')">
+      <div class="hc-emoji">🏆</div>
+      <h3>Kuis Utama — 25 Soal</h3>
+      <p>Uji seluruh pemahamanmu. Ada timer, skor langsung & pembahasan!</p>
+      <div class="hc-bar"></div>
+    </div>
+  </div>
+  <div class="sec-head"><div class="dot dot-blue"></div><h3>Ringkasan Semua Materi</h3></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Bab</th><th>Topik</th><th>Sub-Topik</th></tr></thead>
+      <tbody>
+        <tr><td><strong style="color:var(--teal)">1</strong></td><td><strong>Pengenalan Cloud</strong></td><td>Definisi, Public/Private/Hybrid, 5 Fungsi, Cara Kerja, Manfaat, Penyedia</td></tr>
+        <tr><td><strong style="color:var(--orange)">2</strong></td><td><strong>Konsep Cloud</strong></td><td>7 Konsep: Internet sbg pusat kontrol, Ruang virtual, Penyimpanan, Keamanan, Transfer data</td></tr>
+        <tr><td><strong style="color:var(--purple)">3</strong></td><td><strong>Layanan Cloud</strong></td><td>SaaS (Office 365), IaaS (Azure/AWS), PaaS (Salesforce/Heroku), Karakteristik</td></tr>
+        <tr><td><strong style="color:var(--green)">4</strong></td><td><strong>OOP PHP</strong></td><td>Class, Object, Properties, Methods, Modifier, Getter/Setter, Koneksi DB, CRUD</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===================== BAB 1 ===================== -->
+<div id="bab1" class="page">
+  <div class="page-hero ph-blue">
+    <div class="ph-icon blue">☁️</div>
+    <div class="ph-text">
+      <div class="bab-tag" style="color:var(--teal)">BAB 1 · 5 MEI 2023</div>
+      <h2>Pengenalan Cloud Computing</h2>
+      <p>Memahami konsep dasar, fungsi, cara kerja, dan manfaat komputasi awan bagi kehidupan sehari-hari.</p>
+    </div>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-blue"></div><h3>Apa itu Cloud Computing?</h3></div>
+  <div class="callout callout-blue">
+    <div class="callout-icon">📖</div>
+    <div class="callout-body">
+      <h4>Definisi Cloud Computing</h4>
+      <p>Cloud Computing adalah <strong>gabungan pemanfaatan teknologi komputer dan pengembangan berbasis Internet</strong>. Disebut "Cloud" karena informasi diakses secara <em>remote</em> di <strong>"awan" (ruang virtual)</strong>. Bisa diakses kapan saja asalkan ada koneksi internet, dan bersifat <strong>public</strong> atau <strong>private</strong>.</p>
+    </div>
+  </div>
+  <div class="cards3">
+    <div class="info-card">
+      <div class="ic-top"><div class="ic-badge teal">🌐</div><h4>Public Cloud</h4></div>
+      <p>Menyediakan layanannya secara <strong>publik di internet</strong>. Dapat diakses oleh siapa saja. Contoh: Google Drive, YouTube, Gmail.</p>
+      <div class="tag-row"><span class="tag tag-blue">Umum</span><span class="tag tag-green">Murah</span></div>
+    </div>
+    <div class="info-card">
+      <div class="ic-top"><div class="ic-badge orange">🔒</div><h4>Private Cloud</h4></div>
+      <p>Hanya menyediakan layanan kepada <strong>user tertentu saja</strong>. Lebih aman dan terkontrol. Contoh: cloud internal bank.</p>
+      <div class="tag-row"><span class="tag tag-orange">Aman</span><span class="tag tag-yellow">Eksklusif</span></div>
+    </div>
+    <div class="info-card">
+      <div class="ic-top"><div class="ic-badge purple">🔀</div><h4>Hybrid Cloud</h4></div>
+      <p>Kombinasi public & private. Beberapa data di server privat, sisanya di public cloud. Fleksibel untuk perusahaan besar.</p>
+      <div class="tag-row"><span class="tag tag-purple">Fleksibel</span><span class="tag tag-blue">Optimal</span></div>
+    </div>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-teal" style="background:var(--teal)"></div><h3>5 Fungsi Cloud Computing</h3></div>
+  <div class="cards3">
+    <div class="info-card"><div class="ic-top"><div class="ic-badge teal">✉️</div><h4>Email</h4></div><p>Layanan email berbasis cloud seperti <strong>Gmail</strong> dan <strong>Zimbra Mail</strong>. Bisa diakses dari perangkat mana saja.</p></div>
+    <div class="info-card"><div class="ic-top"><div class="ic-badge blue">💾</div><h4>Penyimpanan & Backup</h4></div><p>Menyimpan, backup, dan mengambil data secara remote. Tidak perlu hardisk fisik tambahan.</p></div>
+    <div class="info-card"><div class="ic-top"><div class="ic-badge green">⚙️</div><h4>Membuat & Mengetes Aplikasi</h4></div><p>Developer bisa membuat, mengetes, dan men-deploy aplikasi tanpa infrastruktur fisik sendiri.</p></div>
+    <div class="info-card"><div class="ic-top"><div class="ic-badge orange">📊</div><h4>Menganalisis Data</h4></div><p>Menganalisis data dalam skala besar menggunakan computing power dari server cloud yang sangat besar.</p></div>
+    <div class="info-card"><div class="ic-top"><div class="ic-badge purple">▶️</div><h4>Streaming Audio & Video</h4></div><p>Streaming langsung dari cloud tanpa perlu menyimpan di perangkat lokal. Contoh: Spotify, YouTube, Netflix.</p></div>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-orange"></div><h3>Cara Kerja Cloud Computing</h3></div>
+  <div class="callout callout-orange">
+    <div class="callout-icon">⚙️</div>
+    <div class="callout-body">
+      <h4>Dua Faktor Utama</h4>
+      <p>Setiap varian Cloud Computing memiliki dua faktor yang sama: <strong>(1) data center yang berada di luar</strong> (remote) dan <strong>(2) harus memiliki internet</strong> untuk mengaksesnya. Sumber daya server dikumpulkan untuk membuat platform besar yang menampung layanan virtual. Resource diatur agar fleksibel sehingga pengguna bisa mengakses lebih banyak ruang penyimpanan kapanpun dibutuhkan.</p>
+    </div>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-green"></div><h3>Penyedia Cloud Populer di Indonesia</h3></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Penyedia</th><th>Jenis</th><th>Keunggulan Utama</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>Indonesian Cloud</strong></td><td><span class="tag tag-green">Lokal</span></td><td>Server di Indonesia, cocok untuk regulasi data nasional</td></tr>
+        <tr><td>2</td><td><strong>Amazon Web Services (AWS)</strong></td><td><span class="tag tag-blue">Global</span></td><td>Paling lengkap, digunakan jutaan perusahaan di dunia</td></tr>
+        <tr><td>3</td><td><strong>Microsoft Azure</strong></td><td><span class="tag tag-blue">Global</span></td><td>Integrasi sempurna dengan ekosistem Microsoft Office</td></tr>
+        <tr><td>4</td><td><strong>IBM Cloud</strong></td><td><span class="tag tag-blue">Global</span></td><td>Fokus enterprise, AI, dan keamanan tingkat tinggi</td></tr>
+        <tr><td>5</td><td><strong>Alibaba Cloud</strong></td><td><span class="tag tag-orange">Regional</span></td><td>Terkuat di kawasan Asia Pasifik, harga kompetitif</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-blue"></div><h3>🎮 Simulasi — Identifikasi Jenis Cloud</h3></div>
+  <div class="sim-wrap">
+    <div class="sim-top"><div class="sim-icon" style="background:#EFF6FF">🎯</div><h4>Klik pilihan yang tepat untuk setiap skenario!</h4></div>
+    <div class="sim-body">
+      <div class="ct-items" id="ctGame"></div>
+      <div class="result-msg-box" id="ctResult"></div>
+      <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-blue" onclick="checkCT()"><i class="fas fa-check"></i> Cek Jawaban</button>
+        <button class="btn btn-ghost" onclick="resetCT()"><i class="fas fa-redo"></i> Ulangi</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-yellow"></div><h3>✏️ Latihan Soal BAB 1</h3></div>
+  <div class="exer-wrap" id="exerBab1"></div>
+</div>
+
+<!-- ===================== BAB 2 ===================== -->
+<div id="bab2" class="page">
+  <div class="page-hero ph-orange">
+    <div class="ph-icon orange">💡</div>
+    <div class="ph-text">
+      <div class="bab-tag" style="color:var(--orange)">BAB 2 · 12 MEI 2023</div>
+      <h2>Konsep Cloud Computing</h2>
+      <p>Pelajari 7 konsep utama sistem komputasi awan yang harus dipahami secara menyeluruh.</p>
+    </div>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-orange"></div><h3>7 Konsep Utama Sistem Komputasi Awan</h3></div>
+  <div class="callout callout-orange"><div class="callout-icon">💡</div><div class="callout-body"><h4>Mengapa Harus Dipelajari?</h4><p>Banyak perusahaan yang <strong>tahu</strong> tentang cloud computing tetapi kurang memahami <strong>konsepnya</strong>. Selain fungsi, konsep-konsepnya juga harus dipelajari secara menyeluruh agar benar-benar paham cara menggunakannya.</p></div></div>
+
+  <div style="margin-top:8px;">
+    <div class="cf-row"><div class="cf-dot" style="background:var(--blue)">1</div><div class="cf-content"><h4>☁️ Internet sebagai Pusat Kontrol</h4><p>Perusahaan atau bisnis <strong>harus terkoneksi pada internet</strong> sebagai pusat pengendalian saat mengakses berbagai data dan dokumen. Tanpa internet, sistem cloud computing tidak bisa berjalan sama sekali.</p></div></div>
+    <div class="cf-row"><div class="cf-dot" style="background:var(--teal)">2</div><div class="cf-content"><h4>📱 Perangkat Mempunyai Jaringan Internet</h4><p>Setiap perangkat yang mengakses cloud harus mampu menerima sinyal internet. Perangkat yang rusak atau tidak bisa menerima sinyal akan menghambat proses pengaksesan data.</p></div></div>
+    <div class="cf-row"><div class="cf-dot" style="background:var(--orange)">3</div><div class="cf-content"><h4>🌐 Bekerja Dalam Ruang Virtual Cloud</h4><p>Data dan dokumen fisik <strong>harus diubah menjadi digital terlebih dahulu</strong> sebelum masuk ke virtual cloud. Ini merupakan syarat utama penggunaan cloud computing.</p></div></div>
+    <div class="cf-row"><div class="cf-dot" style="background:var(--yellow)">4</div><div class="cf-content"><h4>💾 Menyimpan Data dan Dokumen Digital</h4><p>Cloud computing menyimpan data-data digital secara aman di dalam ruang virtual. Kemudahan pengolahan data menjadi dokumen digital adalah salah satu keuntungan utama cloud.</p></div></div>
+    <div class="cf-row"><div class="cf-dot" style="background:var(--green)">5</div><div class="cf-content"><h4>🔐 Mengamankan Data dan Dokumen</h4><p>Penyedia jasa membuat software khusus yang hanya bisa diakses oleh masing-masing kliennya. Data dan dokumen terjaga sangat aman di dalam sistem virtual yang dibangun.</p></div></div>
+    <div class="cf-row"><div class="cf-dot" style="background:var(--purple)">6</div><div class="cf-content"><h4>📤 Mentransfer Data dan Dokumen</h4><p>Perusahaan yang menggunakan cloud dimudahkan dalam <strong>mentransfer data antar karyawan</strong>. Komputer-komputer terhubung satu sama lain melalui jaringan, meningkatkan kinerja perusahaan.</p></div></div>
+    <div class="cf-row"><div class="cf-dot" style="background:var(--pink)">7</div><div class="cf-content"><h4>🚀 Tidak Membebankan Penggunaan Memori</h4><p>Cloud computing <strong>tidak membebankan penggunaan memori lokal</strong> pada software perusahaan. Tidak perlu membeli hardisk tambahan karena storage tersedia di cloud secara elastis.</p></div></div>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-teal" style="background:var(--teal)"></div><h3>Contoh Penerapan di Berbagai Bidang</h3></div>
+  <div class="cards3">
+    <div class="info-card"><div class="ic-top"><div class="ic-badge teal">🗂️</div><h4>Google Drive</h4></div><p>Penyimpanan dan berbagi dokumen cloud dari Google. Digunakan oleh perusahaan dan individu di seluruh dunia.</p><div class="tag-row"><span class="tag tag-blue">Bisnis</span><span class="tag tag-green">Pendidikan</span></div></div>
+    <div class="info-card"><div class="ic-top"><div class="ic-badge blue">📦</div><h4>Dropbox</h4></div><p>Menyimpan berbagai jenis dokumen dan data dengan kapasitas tertentu. Populer di kalangan bisnis start-up.</p><div class="tag-row"><span class="tag tag-orange">Start-up</span><span class="tag tag-blue">Kolaborasi</span></div></div>
+    <div class="info-card"><div class="ic-top"><div class="ic-badge purple">📱</div><h4>Media Sosial</h4></div><p>Instagram, Facebook, TikTok — semua menyimpan foto & video di cloud secara permanen sebagai arsip digital.</p><div class="tag-row"><span class="tag tag-purple">Marketing</span><span class="tag tag-green">Arsip</span></div></div>
+    <div class="info-card"><div class="ic-top"><div class="ic-badge green">🏥</div><h4>Teknologi Kesehatan</h4></div><p>Telemedicine, Halodoc, Alodokter — mengirim data medis dari satu lokasi ke lainnya menggunakan cloud.</p><div class="tag-row"><span class="tag tag-green">Kesehatan</span><span class="tag tag-blue">IoT</span></div></div>
+    <div class="info-card"><div class="ic-top"><div class="ic-badge orange">🏛️</div><h4>Pemerintahan</h4></div><p>Mengamankan data masyarakat. Digunakan oleh Pengawas Tenaga Nuklir dan Kementerian Riset Teknologi.</p><div class="tag-row"><span class="tag tag-orange">Kemenristek</span></div></div>
+    <div class="info-card"><div class="ic-top"><div class="ic-badge yellow">🎓</div><h4>Bidang Pendidikan</h4></div><p>Google Classroom memudahkan guru dan murid dalam proses pembelajaran jarak jauh secara online.</p><div class="tag-row"><span class="tag tag-yellow">E-Learning</span></div></div>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-yellow"></div><h3>✏️ Latihan Soal BAB 2</h3></div>
+  <div class="exer-wrap" id="exerBab2"></div>
+</div>
+
+<!-- ===================== BAB 3 ===================== -->
+<div id="bab3" class="page">
+  <div class="page-hero ph-purple">
+    <div class="ph-icon purple">🧩</div>
+    <div class="ph-text">
+      <div class="bab-tag" style="color:var(--purple)">BAB 3 · 19 MEI 2023</div>
+      <h2>Layanan Cloud Computing</h2>
+      <p>Memahami tiga model layanan utama: SaaS, IaaS, dan PaaS beserta karakteristik dan contohnya.</p>
+    </div>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-purple"></div><h3>Tiga Model Layanan Utama</h3></div>
+  <div class="cards3">
+    <div class="info-card" style="border-color:#BFDBFE;border-width:2px;">
+      <div class="ic-top"><div class="ic-badge blue">💻</div><h4 style="color:var(--blue-dark)">SaaS — Software as a Service</h4></div>
+      <p>Perangkat lunak yang dijadikan sebagai <strong>layanan online</strong>. Pengguna memakai aplikasi tanpa perlu memahami teknis penyimpanan, server, atau pengelolaan perangkat.</p>
+      <div class="callout callout-blue" style="padding:10px 14px;margin:10px 0 6px;">
+        <div class="callout-body"><p>🎯 Contoh: <strong>Office 365, Google Workspace, Zoom</strong></p></div>
+      </div>
+      <div class="tag-row"><span class="tag tag-blue">End User</span><span class="tag tag-green">Siap Pakai</span></div>
+    </div>
+    <div class="info-card" style="border-color:var(--orange-soft);border-width:2px;">
+      <div class="ic-top"><div class="ic-badge orange">🖥️</div><h4 style="color:#C2410C">IaaS — Infrastructure as a Service</h4></div>
+      <p>Layanan server fisik dan virtual server. Menyediakan resource cloud seperti <strong>server, jaringan, storage</strong> dan ruang data center tanpa membeli perangkat fisik.</p>
+      <div class="callout callout-orange" style="padding:10px 14px;margin:10px 0 6px;">
+        <div class="callout-body"><p>🎯 Contoh: <strong>Microsoft Azure, Indonesian Cloud, AWS</strong></p></div>
+      </div>
+      <div class="tag-row"><span class="tag tag-orange">Admin IT</span><span class="tag tag-yellow">Kendali Penuh</span></div>
+    </div>
+    <div class="info-card" style="border-color:var(--purple-soft);border-width:2px;">
+      <div class="ic-top"><div class="ic-badge purple">🔧</div><h4 style="color:#6D28D9">PaaS — Platform as a Service</h4></div>
+      <p>Layanan cloud dalam bentuk <strong>platform untuk membuat aplikasi</strong>. Memberikan framework bagi developer. Server, storage, dan jaringan dikelola penyedia pihak ketiga.</p>
+      <div class="callout callout-purple" style="padding:10px 14px;margin:10px 0 6px;">
+        <div class="callout-body"><p>🎯 Contoh: <strong>Salesforce, Heroku, Google App Engine</strong></p></div>
+      </div>
+      <div class="tag-row"><span class="tag tag-purple">Developer</span><span class="tag tag-blue">Framework</span></div>
+    </div>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-blue"></div><h3>Perbandingan Lengkap SaaS vs IaaS vs PaaS</h3></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Aspek</th><th>☁️ SaaS</th><th>🖥️ IaaS</th><th>🔧 PaaS</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Kepanjangan</strong></td><td>Software as a Service</td><td>Infrastructure as a Service</td><td>Platform as a Service</td></tr>
+        <tr><td><strong>Yang Disediakan</strong></td><td>Aplikasi siap pakai</td><td>Server, jaringan, storage</td><td>Platform pengembangan</td></tr>
+        <tr><td><strong>Pengguna Utama</strong></td><td>End user umum</td><td>Admin IT / Perusahaan</td><td>Developer / Programmer</td></tr>
+        <tr><td><strong>Kontrol User</strong></td><td>Minimal sekali</td><td>Penuh atas infrastruktur</td><td>Kontrol di level aplikasi</td></tr>
+        <tr><td><strong>Tanggung Jawab Update</strong></td><td>Penyedia layanan</td><td>Dibagi pengguna & penyedia</td><td>Penyedia layanan</td></tr>
+        <tr><td><strong>Kompleksitas</strong></td><td>🟢 Rendah</td><td>🟡 Menengah</td><td>🔴 Paling Kompleks</td></tr>
+        <tr><td><strong>Contoh Nyata</strong></td><td>Office 365, Gmail, Zoom</td><td>Azure, AWS, Indonesian Cloud</td><td>Salesforce, Heroku</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-purple"></div><h3>Karakteristik Detail</h3></div>
+  <div class="accordion" onclick="toggleAcc(this)"><div class="acc-head open"><span>💻 Karakteristik SaaS</span><span class="acc-icon"><i class="fas fa-chevron-down"></i></span></div><div class="acc-body open"><ul><li>✅ <strong>Dikelola dari lokasi pusat</strong> — Software dikelola terpusat, pengguna tidak perlu memikirkan teknis.</li><li>✅ <strong>Akses via internet</strong> — Memerlukan jaringan internet; kualitas pakai bergantung pada kualitas internet.</li><li>✅ <strong>Pembaruan otomatis</strong> — Pembaruan hardware/software menjadi tanggung jawab penyedia, bukan pengguna.</li></ul></div></div>
+  <div class="accordion" onclick="toggleAcc(this)"><div class="acc-head"><span>🖥️ Karakteristik IaaS</span><span class="acc-icon"><i class="fas fa-chevron-down"></i></span></div><div class="acc-body"><ul><li>✅ <strong>Sumber daya sebagai layanan</strong> — Server, storage, dan jaringan tersedia sebagai layanan cloud.</li><li>✅ <strong>Biaya bervariasi</strong> — Tergantung penggunaan perusahaan (pay-as-you-go).</li><li>✅ <strong>Sangat scalable</strong> — Dapat dengan cepat disesuaikan dengan kebutuhan.</li><li>✅ <strong>Multi-user</strong> — Dapat diakses oleh banyak pengguna dalam satu perangkat.</li><li>✅ <strong>Kendali penuh</strong> — Perusahaan mempunyai kendali penuh atas infrastrukturnya.</li><li>✅ <strong>Fleksibilitas tinggi</strong> — Bisa dikonfigurasi sesuai kebutuhan spesifik.</li></ul></div></div>
+  <div class="accordion" onclick="toggleAcc(this)"><div class="acc-head"><span>🔧 Karakteristik PaaS</span><span class="acc-icon"><i class="fas fa-chevron-down"></i></span></div><div class="acc-body"><ul><li>✅ <strong>Dikelola dari lokasi pusat</strong> — Platform dikelola secara terpusat oleh penyedia.</li><li>✅ <strong>Akses via internet</strong> — Memerlukan koneksi internet yang stabil dan andal.</li><li>✅ <strong>Server dikelola pihak ketiga</strong> — Semua server, penyimpanan, jaringan dikelola oleh penyedia.</li><li>✅ <strong>Framework untuk developer</strong> — Menyediakan tools dan framework untuk membangun aplikasi yang disesuaikan.</li></ul></div></div>
+
+  <div class="sec-head"><div class="dot dot-blue"></div><h3>🎮 Simulasi — Cocokkan Skenario dengan Layanan Cloud</h3></div>
+  <div class="sim-wrap">
+    <div class="sim-top"><div class="sim-icon" style="background:var(--purple-light)">🧩</div><h4>Klik skenario → lalu klik layanan yang sesuai!</h4></div>
+    <div class="sim-body">
+      <div class="match-cols">
+        <div id="matchLeft"></div>
+        <div class="match-arrow">→</div>
+        <div id="matchRight">
+          <div class="match-item match-svc saas" id="sv_SaaS" onclick="selectSvc('SaaS')">☁️ SaaS</div>
+          <div class="match-item match-svc iaas" id="sv_IaaS" onclick="selectSvc('IaaS')">🖥️ IaaS</div>
+          <div class="match-item match-svc paas" id="sv_PaaS" onclick="selectSvc('PaaS')">🔧 PaaS</div>
+        </div>
+      </div>
+      <div class="result-msg-box" id="matchResult"></div>
+      <div style="margin-top:14px;display:flex;gap:8px;">
+        <button class="btn btn-ghost" onclick="resetMatch()"><i class="fas fa-redo"></i> Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-yellow"></div><h3>✏️ Latihan Soal BAB 3</h3></div>
+  <div class="exer-wrap" id="exerBab3"></div>
+</div>
+
+<!-- ===================== BAB 4 ===================== -->
+<div id="bab4" class="page">
+  <div class="page-hero ph-green">
+    <div class="ph-icon green">💻</div>
+    <div class="ph-text">
+      <div class="bab-tag" style="color:var(--green)">BAB 4 · MODUL PRAKTIKUM OOP PHP</div>
+      <h2>Object Oriented Programming</h2>
+      <p>Belajar OOP PHP dari nol sampai bisa membuat sistem informasi mahasiswa lengkap dengan database.</p>
+    </div>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-green"></div><h3>Konsep Dasar OOP</h3></div>
+  <div class="cards3">
+    <div class="info-card"><div class="ic-top"><div class="ic-badge blue">📐</div><h4>CLASS</h4></div><p>Blueprint/cetak biru untuk membangun Object. Memodelkan objek dunia nyata ke dalam kode. Contoh: class <code style="background:var(--bg);padding:1px 6px;border-radius:4px;font-family:'Fira Code';font-size:12px;">Mobil</code> memiliki karakteristik warna, bobot.</p></div>
+    <div class="info-card"><div class="ic-top"><div class="ic-badge orange">📦</div><h4>OBJECT</h4></div><p>Contoh spesifik (instance) dari sebuah Class. Dari class Mobil bisa dibuat object <code style="background:var(--bg);padding:1px 6px;border-radius:4px;font-family:'Fira Code';font-size:12px;">$myCar</code> dan <code style="background:var(--bg);padding:1px 6px;border-radius:4px;font-family:'Fira Code';font-size:12px;">$yourCar</code>.</p></div>
+    <div class="info-card"><div class="ic-top"><div class="ic-badge green">🏷️</div><h4>PROPERTIES</h4></div><p>Karakteristik class yang menyerupai variabel. Memiliki nama dan nilai. Contoh: <code style="background:var(--bg);padding:1px 6px;border-radius:4px;font-family:'Fira Code';font-size:12px;">$warna</code>, <code style="background:var(--bg);padding:1px 6px;border-radius:4px;font-family:'Fira Code';font-size:12px;">$berat</code>.</p></div>
+    <div class="info-card"><div class="ic-top"><div class="ic-badge purple">⚙️</div><h4>METHODS</h4></div><p>Tindakan/kebiasaan yang berkaitan dengan class. Seperti fungsi, bisa menerima argumen dan mengakses properties object. Disebut juga 'anggota' class.</p></div>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-blue"></div><h3>Tiga Jenis Modifier Akses</h3></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Modifier</th><th>Class Sendiri</th><th>Class Turunan</th><th>Class Lain</th><th>Gunakan Saat...</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-green" style="font-size:13px;font-family:'Fira Code'">public</span></td><td>✅ Ya</td><td>✅ Ya</td><td>✅ Ya</td><td>Property/method boleh diakses siapa saja</td></tr>
+        <tr><td><span class="tag tag-yellow" style="font-size:13px;font-family:'Fira Code'">protected</span></td><td>✅ Ya</td><td>✅ Ya</td><td>❌ Tidak</td><td>Hanya class & turunannya yang boleh akses</td></tr>
+        <tr><td><span class="tag" style="background:var(--red-soft);color:#991B1B;font-size:13px;font-family:'Fira Code'">private</span></td><td>✅ Ya</td><td>❌ Tidak</td><td>❌ Tidak</td><td>Hanya class itu sendiri yang boleh akses</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-green"></div><h3>📋 Tutorial OOP Langkah demi Langkah</h3></div>
+  <div class="steps">
+    <div class="step-item">
+      <div class="step-left"><div class="step-num" style="background:var(--blue)">1</div><div class="step-line" style="background:var(--blue-soft)"></div></div>
+      <div class="step-content">
+        <h4 style="color:var(--blue)">Buat File Class (classLibrary.php)</h4>
+        <p>Pertama, buat file PHP yang berisi definisi class. Beri nama class dengan huruf kapital. Tambahkan properties menggunakan <code style="font-family:'Fira Code'">var $nama</code>.</p>
+        <div class="code-wrap">
+          <div class="code-header"><div class="dots"><span class="cd1"></span><span class="cd2"></span><span class="cd3"></span></div><span class="lang-tag">classLibrary.php</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+          <div class="code-body"><pre><span class="kw">&lt;?php</span>
+<span class="kw">class</span> <span class="cl">Orang</span> <span class="op">{</span>
+  <span class="kw">var</span> <span class="nm">$nama</span><span class="op">;</span>
+<span class="op">}</span>
+<span class="kw">?&gt;</span></pre></div>
+        </div>
+        <span class="note note-blue">💡 Class adalah "cetakan" atau blueprint untuk membuat object</span>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-left"><div class="step-num" style="background:var(--teal)">2</div><div class="step-line" style="background:var(--teal-light)"></div></div>
+      <div class="step-content">
+        <h4 style="color:var(--teal)">Tambahkan Getter & Setter</h4>
+        <p>Fungsi <strong>setter</strong> (setNama) untuk mengatur nilai. Fungsi <strong>getter</strong> (getNama) untuk mengambil nilai. <code style="font-family:'Fira Code'">$this</code> menunjuk ke object saat ini.</p>
+        <div class="code-wrap">
+          <div class="code-header"><div class="dots"><span class="cd1"></span><span class="cd2"></span><span class="cd3"></span></div><span class="lang-tag">classLibrary.php</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+          <div class="code-body"><pre><span class="kw">&lt;?php</span>
+<span class="kw">class</span> <span class="cl">Orang</span> <span class="op">{</span>
+  <span class="kw">var</span> <span class="nm">$nama</span><span class="op">;</span>
+
+  <span class="kw">public function</span> <span class="fn">setNama</span><span class="op">(</span><span class="nm">$nama</span><span class="op">) {</span>
+    <span class="nm">$this</span><span class="op">-&gt;</span><span class="nm">nama</span> <span class="op">=</span> <span class="nm">$nama</span><span class="op">;</span>  <span class="cm">// atur nilai</span>
+  <span class="op">}</span>
+
+  <span class="kw">public function</span> <span class="fn">getNama</span><span class="op">() {</span>
+    <span class="kw">return</span> <span class="nm">$this</span><span class="op">-&gt;</span><span class="nm">nama</span><span class="op">;</span>  <span class="cm">// ambil nilai</span>
+  <span class="op">}</span>
+<span class="op">}</span>
+<span class="kw">?&gt;</span></pre></div>
+        </div>
+        <span class="note note-green">✅ $this adalah referensi ke object yang sedang aktif</span>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-left"><div class="step-num" style="background:var(--orange)">3</div><div class="step-line" style="background:var(--orange-soft)"></div></div>
+      <div class="step-content">
+        <h4 style="color:var(--orange)">Gunakan Class di File Lain (index.php)</h4>
+        <p>Gunakan <code style="font-family:'Fira Code'">include</code> atau <code style="font-family:'Fira Code'">require</code> untuk memuat class. Buat object baru dengan <code style="font-family:'Fira Code'">new NamaClass()</code>. Ini disebut <strong>instansiasi</strong>.</p>
+        <div class="code-wrap">
+          <div class="code-header"><div class="dots"><span class="cd1"></span><span class="cd2"></span><span class="cd3"></span></div><span class="lang-tag">index.php</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+          <div class="code-body"><pre><span class="kw">&lt;?php</span>
+<span class="fn">include</span><span class="op">(</span><span class="st">"classLibrary.php"</span><span class="op">);</span>
+
+<span class="cm">// Buat object dari class Orang</span>
+<span class="nm">$org</span> <span class="op">=</span> <span class="kw">new</span> <span class="cl">Orang</span><span class="op">();</span>
+
+<span class="cm">// Atur nilai dengan setter</span>
+<span class="nm">$org</span><span class="op">-&gt;</span><span class="fn">setNama</span><span class="op">(</span><span class="st">"Budi Santoso"</span><span class="op">);</span>
+
+<span class="cm">// Ambil dan tampilkan dengan getter</span>
+<span class="fn">echo</span> <span class="st">"Nama: "</span> <span class="op">.</span> <span class="nm">$org</span><span class="op">-&gt;</span><span class="fn">getNama</span><span class="op">();</span>
+<span class="cm">// Output: Nama: Budi Santoso</span>
+<span class="kw">?&gt;</span></pre></div>
+        </div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-left"><div class="step-num" style="background:var(--green)">4</div><div class="step-line" style="background:var(--green-soft)"></div></div>
+      <div class="step-content">
+        <h4 style="color:var(--green)">Buat Class Koneksi Database</h4>
+        <p>Class CConnection untuk menghubungkan aplikasi ke database MySQL. Memiliki fungsi <code style="font-family:'Fira Code'">openConnection()</code> dan <code style="font-family:'Fira Code'">closeConnection()</code>.</p>
+        <div class="code-wrap">
+          <div class="code-header"><div class="dots"><span class="cd1"></span><span class="cd2"></span><span class="cd3"></span></div><span class="lang-tag">CConnection.php</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+          <div class="code-body"><pre><span class="kw">&lt;?php</span>
+<span class="kw">class</span> <span class="cl">CConnection</span> <span class="op">{</span>
+  <span class="kw">var</span> <span class="nm">$koneksi</span><span class="op">;</span>
+
+  <span class="kw">public function</span> <span class="fn">openConnection</span><span class="op">() {</span>
+    <span class="nm">$server</span>   <span class="op">=</span> <span class="st">'localhost'</span><span class="op">;</span>
+    <span class="nm">$database</span> <span class="op">=</span> <span class="st">'dbsatu'</span><span class="op">;</span>
+    <span class="nm">$user</span>     <span class="op">=</span> <span class="st">'root'</span><span class="op">;</span>
+    <span class="nm">$password</span> <span class="op">=</span> <span class="st">'password'</span><span class="op">;</span>
+    <span class="nm">$this</span><span class="op">-&gt;</span><span class="nm">koneksi</span> <span class="op">=</span>
+      <span class="fn">mysql_connect</span><span class="op">(</span><span class="nm">$server</span><span class="op">,</span> <span class="nm">$user</span><span class="op">,</span> <span class="nm">$password</span><span class="op">);</span>
+    <span class="fn">mysql_select_db</span><span class="op">(</span><span class="nm">$database</span><span class="op">);</span>
+  <span class="op">}</span>
+
+  <span class="kw">public function</span> <span class="fn">closeConnection</span><span class="op">() {</span>
+    <span class="fn">mysql_close</span><span class="op">(</span><span class="nm">$this</span><span class="op">-&gt;</span><span class="nm">koneksi</span><span class="op">);</span>
+  <span class="op">}</span>
+<span class="op">}</span>
+<span class="kw">?&gt;</span></pre></div>
+        </div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-left"><div class="step-num" style="background:var(--purple)">5</div><div class="step-line" style="background:var(--purple-soft)"></div></div>
+      <div class="step-content">
+        <h4 style="color:var(--purple)">Buat Class Model (CMahasiswa.php)</h4>
+        <p>Class model berisi properties data mahasiswa dan fungsi-fungsi CRUD (Create, Read, Update, Delete). Menggunakan class CConnection untuk akses database.</p>
+        <div class="code-wrap">
+          <div class="code-header"><div class="dots"><span class="cd1"></span><span class="cd2"></span><span class="cd3"></span></div><span class="lang-tag">CMahasiswa.php</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+          <div class="code-body"><pre><span class="kw">&lt;?php</span>
+<span class="fn">require</span><span class="op">(</span><span class="st">"CConnection.php"</span><span class="op">);</span>
+
+<span class="kw">class</span> <span class="cl">CMahasiswa</span> <span class="op">{</span>
+  <span class="kw">private</span> <span class="nm">$nim</span><span class="op">,</span> <span class="nm">$nama</span><span class="op">,</span> <span class="nm">$jnskel</span><span class="op">,</span> <span class="nm">$agama</span><span class="op">;</span>
+
+  <span class="cm">// Getter & Setter</span>
+  <span class="kw">public function</span> <span class="fn">getNim</span><span class="op">() {</span> <span class="kw">return</span> <span class="nm">$this</span><span class="op">-&gt;</span><span class="nm">nim</span><span class="op">; }</span>
+  <span class="kw">public function</span> <span class="fn">setNim</span><span class="op">(</span><span class="nm">$nim</span><span class="op">) {</span> <span class="nm">$this</span><span class="op">-&gt;</span><span class="nm">nim</span> <span class="op">=</span> <span class="nm">$nim</span><span class="op">; }</span>
+  <span class="kw">public function</span> <span class="fn">getNama</span><span class="op">() {</span> <span class="kw">return</span> <span class="nm">$this</span><span class="op">-&gt;</span><span class="nm">nama</span><span class="op">; }</span>
+  <span class="kw">public function</span> <span class="fn">setNama</span><span class="op">(</span><span class="nm">$nama</span><span class="op">) {</span> <span class="nm">$this</span><span class="op">-&gt;</span><span class="nm">nama</span> <span class="op">=</span> <span class="nm">$nama</span><span class="op">; }</span>
+
+  <span class="cm">// Fungsi simpan ke database</span>
+  <span class="kw">public function</span> <span class="fn">getInsert</span><span class="op">() {</span>
+    <span class="nm">$sql</span> <span class="op">=</span> <span class="st">"INSERT INTO mahasiswa VALUES
+      ('"</span><span class="op">.</span><span class="nm">$this</span><span class="op">-&gt;</span><span class="fn">getNim</span><span class="op">().</span><span class="st">"','"</span>
+      <span class="op">.</span><span class="nm">$this</span><span class="op">-&gt;</span><span class="fn">getNama</span><span class="op">().</span><span class="st">"')"</span><span class="op">;</span>
+    <span class="nm">$c</span> <span class="op">=</span> <span class="kw">new</span> <span class="cl">CConnection</span><span class="op">();</span>
+    <span class="nm">$c</span><span class="op">-&gt;</span><span class="fn">openConnection</span><span class="op">();</span>
+    <span class="nm">$q</span> <span class="op">=</span> <span class="fn">mysql_query</span><span class="op">(</span><span class="nm">$sql</span><span class="op">);</span>
+    <span class="nm">$c</span><span class="op">-&gt;</span><span class="fn">closeConnection</span><span class="op">();</span>
+    <span class="kw">return</span> <span class="nm">$q</span><span class="op">;</span>
+  <span class="op">}</span>
+
+  <span class="cm">// Fungsi tampilkan semua data</span>
+  <span class="kw">public function</span> <span class="fn">getList</span><span class="op">() {</span>
+    <span class="nm">$sql</span> <span class="op">=</span> <span class="st">"SELECT * FROM mahasiswa"</span><span class="op">;</span>
+    <span class="nm">$c</span> <span class="op">=</span> <span class="kw">new</span> <span class="cl">CConnection</span><span class="op">();</span>
+    <span class="nm">$c</span><span class="op">-&gt;</span><span class="fn">openConnection</span><span class="op">();</span>
+    <span class="kw">return</span> <span class="fn">mysql_query</span><span class="op">(</span><span class="nm">$sql</span><span class="op">);</span>
+  <span class="op">}</span>
+<span class="op">}</span>
+<span class="kw">?&gt;</span></pre></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-orange"></div><h3>Ringkasan Modul Praktikum</h3></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Modul</th><th>Topik</th><th>File yang Dibuat</th></tr></thead>
+      <tbody>
+        <tr><td><strong style="color:var(--blue)">1</strong></td><td>OOP Dasar Web</td><td>Index.php, classLibrary.php</td></tr>
+        <tr><td><strong style="color:var(--teal)">2</strong></td><td>Database dengan OOP</td><td>koneksi.php, testkoneksi.php</td></tr>
+        <tr><td><strong style="color:var(--orange)">3</strong></td><td>Form Mahasiswa</td><td>FormMahasiswa.php, CConnection.php, CMahasiswa.php, Mahasiswa.php</td></tr>
+        <tr><td><strong style="color:var(--yellow)">4</strong></td><td>Delete Data</td><td>getList(), getDelete(), list.php, hapus.php</td></tr>
+        <tr><td><strong style="color:var(--green)">5-6</strong></td><td>CSS & Login Page</td><td>style1.css, login.php, isi.php</td></tr>
+        <tr><td><strong style="color:var(--purple)">7-8</strong></td><td>Form Matakuliah</td><td>CMatkul.php, FormMatkul.php, listmatkul.php, hapusmatkul.php</td></tr>
+        <tr><td><strong style="color:var(--pink)">9</strong></td><td>Form Transaksi & Nilai</td><td>CTrans.php, transaksi.php, simpantrans.php, listTrans.php</td></tr>
+        <tr><td><strong style="color:var(--red)">10</strong></td><td>Login System</td><td>index.php, ceklogin.php, session management</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-green"></div><h3>🎮 Simulasi — PHP Class Builder</h3></div>
+  <div class="sim-wrap">
+    <div class="sim-top"><div class="sim-icon" style="background:var(--green-light)">🛠️</div><h4>Buat Class PHP Otomatis — Isi form, kode langsung muncul!</h4></div>
+    <div class="sim-body">
+      <div class="oop-grid">
+        <div>
+          <div class="form-group"><label>Nama Class</label><input type="text" id="className" placeholder="contoh: Mahasiswa" oninput="buildClass()"></div>
+          <div class="form-group">
+            <label>Tambah Property</label>
+            <div class="inline-row">
+              <select id="propMod" style="width:110px;flex-shrink:0;"><option value="public">public</option><option value="protected">protected</option><option value="private">private</option></select>
+              <input type="text" id="propName" placeholder="nama property">
+              <button class="btn btn-blue" onclick="addProp()" style="flex-shrink:0;padding:10px 12px;"><i class="fas fa-plus"></i></button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Properties yang ditambahkan</label>
+            <div class="pill-list" id="propList" style="min-height:34px;padding:6px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);"></div>
+          </div>
+          <div class="form-group">
+            <label>Tambah Method</label>
+            <div class="inline-row">
+              <select id="methMod" style="width:110px;flex-shrink:0;"><option value="public">public</option><option value="protected">protected</option><option value="private">private</option></select>
+              <input type="text" id="methName" placeholder="nama method">
+              <button class="btn btn-green" onclick="addMeth()" style="flex-shrink:0;padding:10px 12px;"><i class="fas fa-plus"></i></button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Methods yang ditambahkan</label>
+            <div class="pill-list" id="methList" style="min-height:34px;padding:6px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);"></div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-orange btn-full" onclick="buildClass()"><i class="fas fa-magic"></i> Generate Code PHP</button>
+            <button class="btn btn-ghost btn-full" onclick="clearBuilder()"><i class="fas fa-trash"></i> Reset Semua</button>
+          </div>
+        </div>
+        <div>
+          <div class="form-group"><label>Hasil Kode PHP</label></div>
+          <div class="code-wrap" style="height:calc(100% - 40px);">
+            <div class="code-header"><div class="dots"><span class="cd1"></span><span class="cd2"></span><span class="cd3"></span></div><span class="lang-tag">output.php</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div>
+            <div class="code-body" style="min-height:280px;"><pre id="oopOut"><span class="cm">// Isi form di sebelah kiri
+// untuk generate kode PHP otomatis</span></pre></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-head"><div class="dot dot-yellow"></div><h3>✏️ Latihan Soal BAB 4</h3></div>
+  <div class="exer-wrap" id="exerBab4"></div>
+</div>
+
+<!-- ===================== KUIS ===================== -->
+<div id="kuis" class="page">
+  <div class="quiz-outer">
+    <!-- START -->
+    <div class="quiz-start-card" id="quizStart">
+      <div style="font-size:56px;margin-bottom:12px;">🏆</div>
+      <h2>Kuis Utama</h2>
+      <p>25 soal pilihan ganda mencakup semua materi. Setiap soal punya batas waktu <strong>30 detik</strong>. Jawab dengan cepat dan tepat!</p>
+      <div class="qsc-stats">
+        <div class="qss"><div class="qss-num">25</div><div class="qss-lbl">Soal</div></div>
+        <div class="qss"><div class="qss-num">30s</div><div class="qss-lbl">Per Soal</div></div>
+        <div class="qss"><div class="qss-num">4</div><div class="qss-lbl">Pilihan</div></div>
+      </div>
+      <button class="start-quiz-btn" onclick="startQuiz()">🚀 Mulai Kuis Sekarang!</button>
+    </div>
+    <!-- QUIZ AREA -->
+    <div id="quizArea" style="display:none">
+      <div class="quiz-card">
+        <div class="quiz-top-bar">
+          <div class="qtb-left">Soal <strong id="qNum">1</strong> dari 25</div>
+          <div class="qtb-center"><div class="timer-display" id="timerDisp">⏱ <span id="timerNum">30</span></div></div>
+          <div class="qtb-right"><div class="score-live"><i class="fas fa-star" style="color:var(--yellow)"></i> Benar: <strong id="liveScore">0</strong></div></div>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="qProgress" style="width:4%"></div></div>
+        <div class="quiz-body">
+          <div class="q-cat-pill" id="qCatPill"></div>
+          <div class="q-text" id="qText"></div>
+          <div class="q-options" id="qOptions"></div>
+        </div>
+        <div class="quiz-bottom">
+          <div class="q-feedback" id="qFeedback"></div>
+          <button class="next-q-btn" id="nextBtn" onclick="nextQ()">Lanjut →</button>
+        </div>
+      </div>
+    </div>
+    <!-- RESULT -->
+    <div class="result-card" id="resultCard">
+      <div class="score-circle-wrap">
+        <svg width="160" height="160" viewBox="0 0 160 160">
+          <circle class="circle-bg" cx="80" cy="80" r="70"/>
+          <circle class="circle-fg" id="circFg" cx="80" cy="80" r="70" stroke-dasharray="440" stroke-dashoffset="440" stroke="var(--green)"/>
+        </svg>
+        <div class="score-center-text">
+          <div class="scn" id="scNum" style="color:var(--green)">0</div>
+          <div class="scs">dari 25</div>
+        </div>
+      </div>
+      <div class="grade-badge" id="gradeBadge">A</div>
+      <p class="result-msg" id="resMsg"></p>
+      <div class="result-stats-row">
+        <div class="rs-box"><div class="rs-num rs-c" id="rsC">0</div><div class="rs-lbl">✅ Benar</div></div>
+        <div class="rs-box"><div class="rs-num rs-w" id="rsW">0</div><div class="rs-lbl">❌ Salah</div></div>
+        <div class="rs-box"><div class="rs-num rs-p" id="rsP">0%</div><div class="rs-lbl">📊 Nilai</div></div>
+      </div>
+      <div style="margin:8px 0 28px;">
+        <button class="restart-btn" onclick="restartQuiz()"><i class="fas fa-redo"></i> Ulangi Kuis</button>
+        <button class="restart-btn" style="background:linear-gradient(135deg,var(--green),var(--teal));" onclick="showPage('home')"><i class="fas fa-home"></i> Kembali</button>
+      </div>
+      <div style="text-align:left;">
+        <div class="sec-head"><div class="dot dot-blue"></div><h3>Pembahasan Jawaban</h3></div>
+        <div class="tbl-wrap"><table class="review-tbl" id="reviewTbl"><thead><tr><th>#</th><th>Pertanyaan</th><th>Jawabanmu</th><th>Jawaban Benar</th><th>Status</th></tr></thead><tbody id="revBody"></tbody></table></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆</button>
+
+<script>
+// ── HELPERS ──
+const $ = id => document.getElementById(id);
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  $(id).classList.add('active');
+  const navMap={home:0,bab1:1,bab2:2,bab3:3,bab4:4,kuis:5};
+  document.querySelectorAll('.nav-item')[navMap[id]].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleAcc(el){
+  const hd=el.querySelector('.acc-head'),body=el.querySelector('.acc-body');
+  hd.classList.toggle('open');body.classList.toggle('open');
+}
+function copyCode(btn){
+  const pre=btn.closest('.code-wrap').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText||pre.textContent);
+  btn.textContent='✅ Copied!';setTimeout(()=>btn.textContent='📋 Copy',2000);
+}
+window.addEventListener('scroll',()=>$('scrollTop').classList.toggle('show',scrollY>400));
+
+// ── ACCORDION toggle ──
+document.querySelectorAll('.accordion').forEach(el=>{
+  el.querySelector('.acc-head').addEventListener('click',()=>toggleAcc(el));
+});
+
+// ── CLOUD TYPE GAME (BAB 1) ──
+const ctData=[
+  {text:'Netflix menyediakan streaming film untuk jutaan pengguna di seluruh internet',ans:'PUBLIC'},
+  {text:'Bank BRI membuat server cloud khusus hanya untuk data nasabah dan karyawannya',ans:'PRIVATE'},
+  {text:'Sebuah startup menyimpan data keuangan di server privat, namun menggunakan Google Drive untuk kolaborasi tim',ans:'HYBRID'},
+  {text:'Aplikasi ojek online yang dapat diunduh dan digunakan oleh siapa saja melalui internet',ans:'PUBLIC'},
+  {text:'Kemenristek membangun infrastruktur cloud sendiri yang hanya bisa diakses instansi pemerintah tertentu',ans:'PRIVATE'},
+];
+function renderCT(){
+  const c=$('ctGame'); if(!c) return;
+  c.innerHTML=ctData.map((d,i)=>`
+    <div class="ct-item" id="ctr${i}">
+      <span style="font-size:13.5px;font-weight:600;flex:1;margin-right:14px">${i+1}. ${d.text}</span>
+      <div class="ct-opts">
+        <button class="ct-btn pub" data-g="${i}" data-v="PUBLIC" onclick="pickCT(this,'PUBLIC','${d.ans}',${i})">Public</button>
+        <button class="ct-btn pri" data-g="${i}" data-v="PRIVATE" onclick="pickCT(this,'PRIVATE','${d.ans}',${i})">Private</button>
+        <button class="ct-btn hyb" data-g="${i}" data-v="HYBRID" onclick="pickCT(this,'HYBRID','${d.ans}',${i})">Hybrid</button>
+      </div>
+    </div>`).join('');
+}
+let ctAnswers={};
+function pickCT(btn,val,ans,idx){
+  document.querySelectorAll(`[data-g="${idx}"]`).forEach(b=>{b.classList.remove('ok','bad');b.disabled=false;});
+  btn.classList.add(val===ans?'ok':'bad');
+  ctAnswers[idx]={val,ans,ok:val===ans};
+}
+function checkCT(){
+  if(Object.keys(ctAnswers).length<ctData.length){
+    const r=$('ctResult');r.className='result-msg-box show rmb-info';
+    r.textContent='⚠️ Jawab semua pertanyaan terlebih dahulu ya!';return;
+  }
+  const score=Object.values(ctAnswers).filter(a=>a.ok).length;
+  const r=$('ctResult');
+  r.className='result-msg-box show '+(score>=4?'rmb-ok':'rmb-bad');
+  r.textContent=`Skor kamu: ${score}/${ctData.length} ${score===ctData.length?'— 🎉 Sempurna!':score>=3?'— 👍 Bagus!':'— Pelajari lagi yuk!'}`;
+}
+function resetCT(){ctAnswers={};$('ctResult').className='result-msg-box';renderCT();}
+renderCT();
+
+// ── MATCH GAME (BAB 3) ──
+const matchData=[
+  {id:'m1',text:'Kamu menggunakan Google Docs untuk membuat laporan tanpa menginstal software',ans:'SaaS'},
+  {id:'m2',text:'Perusahaan menyewa server virtual dari AWS untuk hosting aplikasi mereka',ans:'IaaS'},
+  {id:'m3',text:'Developer menggunakan Heroku untuk men-deploy dan menjalankan aplikasi web-nya',ans:'PaaS'},
+  {id:'m4',text:'Tim kantor menggunakan Office 365 untuk email, Word, Excel berbasis cloud',ans:'SaaS'},
+  {id:'m5',text:'PT ABC menyewa ruang data center virtual dari Indonesian Cloud',ans:'IaaS'},
+];
+let selScenario=null, matchAnswers={};
+function renderMatch(){
+  const ml=$('matchLeft'); if(!ml) return;
+  ml.innerHTML=matchData.map(d=>`<div class="match-item match-scenario" id="sc_${d.id}" onclick="selScn('${d.id}')">${d.text}</div>`).join('');
+}
+function selScn(id){
+  if(matchAnswers[id]) return;
+  document.querySelectorAll('.match-scenario').forEach(e=>e.classList.remove('sel'));
+  $('sc_'+id).classList.add('sel'); selScenario=id;
+}
+function selectSvc(svc){
+  if(!selScenario){const r=$('matchResult');r.className='result-msg-box show rmb-info';r.textContent='👆 Pilih skenario di kiri dulu ya!';return;}
+  const sc=matchData.find(d=>d.id===selScenario);
+  const ok=svc===sc.ans;
+  const el=$('sc_'+selScenario);
+  el.classList.remove('sel');el.classList.add(ok?'matched-ok':'matched-bad');
+  el.style.pointerEvents='none';
+  matchAnswers[selScenario]={svc,ans:sc.ans,ok};
+  selScenario=null;
+  if(Object.keys(matchAnswers).length===matchData.length){
+    const cr=Object.values(matchAnswers).filter(a=>a.ok).length;
+    const r=$('matchResult');
+    r.className='result-msg-box show '+(cr===matchData.length?'rmb-ok':'rmb-bad');
+    r.textContent=`Selesai! Skor: ${cr}/${matchData.length} ${cr===matchData.length?'🎉 Sempurna!':'Coba lagi untuk skor penuh!'}`;
+  }
+}
+function resetMatch(){matchAnswers={};selScenario=null;$('matchResult').className='result-msg-box';renderMatch();}
+renderMatch();
+
+// ── OOP BUILDER ──
+let props=[],meths=[];
+function addProp(){
+  const mod=$('propMod').value, name=$('propName').value.trim();
+  if(!name) return;
+  props.push({mod,name}); $('propName').value='';
+  updatePills(); buildClass();
+}
+function addMeth(){
+  const mod=$('methMod').value, name=$('methName').value.trim();
+  if(!name) return;
+  meths.push({mod,name}); $('methName').value='';
+  updatePills(); buildClass();
+}
+function updatePills(){
+  $('propList').innerHTML=props.map((p,i)=>`<span class="pill pill-prop">${p.mod} $${p.name}<span class="rm-x" onclick="removeProp(${i})">✕</span></span>`).join('');
+  $('methList').innerHTML=meths.map((m,i)=>`<span class="pill pill-meth">${m.mod} ${m.name}()<span class="rm-x" onclick="removeMeth(${i})">✕</span></span>`).join('');
+}
+function removeProp(i){props.splice(i,1);updatePills();buildClass();}
+function removeMeth(i){meths.splice(i,1);updatePills();buildClass();}
+function buildClass(){
+  const cn=$('className').value.trim()||'NamaClass';
+  let code=`<span class="kw">&lt;?php</span>\n<span class="kw">class</span> <span class="cl">${cn}</span> <span class="op">{</span>\n`;
+  props.forEach(p=>code+=`  <span class="kw">${p.mod}</span> <span class="nm">$${p.name}</span><span class="op">;</span>\n`);
+  if(props.length) code+='\n';
+  props.forEach(p=>{
+    const cap=p.name[0].toUpperCase()+p.name.slice(1);
+    code+=`  <span class="kw">public function</span> <span class="fn">get${cap}</span><span class="op">() {</span>\n`;
+    code+=`    <span class="kw">return</span> <span class="nm">$this</span><span class="op">-&gt;</span><span class="nm">${p.name}</span><span class="op">;</span>\n  <span class="op">}</span>\n`;
+    code+=`  <span class="kw">public function</span> <span class="fn">set${cap}</span><span class="op">(</span><span class="nm">$${p.name}</span><span class="op">) {</span>\n`;
+    code+=`    <span class="nm">$this</span><span class="op">-&gt;</span><span class="nm">${p.name}</span> <span class="op">=</span> <span class="nm">$${p.name}</span><span class="op">;</span>\n  <span class="op">}</span>\n`;
+  });
+  meths.forEach(m=>{
+    code+=`\n  <span class="kw">${m.mod} function</span> <span class="fn">${m.name}</span><span class="op">() {</span>\n`;
+    code+=`    <span class="cm">// tulis kode di sini...</span>\n  <span class="op">}</span>\n`;
+  });
+  code+=`<span class="op">}</span>\n<span class="kw">?&gt;</span>`;
+  $('oopOut').innerHTML=code;
+}
+function clearBuilder(){props=[];meths=[];$('className').value='';updatePills();buildClass();}
+
+// ── EXERCISES ──
+const exData={
+  bab1:[
+    {q:'Cloud Computing adalah gabungan teknologi komputer dan pengembangan berbasis...',opts:['Bluetooth','Internet','Satelit','Kabel'],ans:1,explain:'Cloud Computing berbasis Internet — informasi diakses secara remote melalui jaringan internet.'},
+    {q:'Jenis cloud yang layanannya hanya untuk pengguna tertentu disebut...',opts:['Public Cloud','Hybrid Cloud','Private Cloud','Personal Cloud'],ans:2,explain:'Private Cloud hanya menyediakan layanannya kepada user-user tertentu yang sudah ditentukan.'},
+    {q:'Manakah yang BUKAN fungsi Cloud Computing?',opts:['Streaming video','Analisis data','Mencetak dokumen fisik','Penyimpanan backup'],ans:2,explain:'Mencetak dokumen fisik bukan fungsi cloud. Cloud Computing berfungsi untuk penyimpanan, analisis, streaming, dan membuat aplikasi.'},
+    {q:'Penyedia layanan cloud yang berasal dari Indonesia adalah...',opts:['Amazon Web Services','Microsoft Azure','Indonesian Cloud','Alibaba Cloud'],ans:2,explain:'Indonesian Cloud adalah penyedia layanan cloud lokal Indonesia. AWS dari Amerika, Azure dari Microsoft (Amerika), Alibaba dari China.'},
+  ],
+  bab2:[
+    {q:'Apa syarat utama agar Cloud Computing bisa berjalan?',opts:['Koneksi Bluetooth','Koneksi Internet','Hard disk eksternal','RAM besar'],ans:1,explain:'Internet adalah syarat utama — tanpa internet, sistem cloud computing tidak bisa berjalan sama sekali.'},
+    {q:'Sebelum data bisa masuk ke virtual cloud, data harus...',opts:['Dicetak','Diarsipkan fisik','Diubah menjadi digital','Dikirim via pos'],ans:2,explain:'Data dan dokumen fisik harus diubah menjadi digital terlebih dahulu sebelum masuk ke virtual cloud.'},
+    {q:'Google Classroom adalah contoh cloud computing di bidang...',opts:['Kesehatan','Bisnis','Pemerintahan','Pendidikan'],ans:3,explain:'Google Classroom merupakan platform e-learning yang digunakan di bidang pendidikan untuk pembelajaran online.'},
+    {q:'Keuntungan cloud terkait penyimpanan adalah perusahaan tidak perlu...',opts:['Koneksi internet','Akun email','Membeli hardisk tambahan','Password'],ans:2,explain:'Cloud computing tidak membebankan memori lokal, sehingga perusahaan tidak perlu membeli hardisk tambahan.'},
+  ],
+  bab3:[
+    {q:'SaaS adalah singkatan dari...',opts:['System as a Service','Software as a Service','Storage as a Service','Server as a Service'],ans:1,explain:'SaaS = Software as a Service — perangkat lunak yang dijadikan layanan online, diakses melalui internet.'},
+    {q:'Office 365 adalah contoh layanan...',opts:['IaaS','PaaS','SaaS','DaaS'],ans:2,explain:'Office 365 adalah SaaS (Software as a Service) — pengguna memakai Word, Excel, PowerPoint via internet tanpa install.'},
+    {q:'Layanan cloud yang memberikan kontrol penuh infrastruktur kepada perusahaan adalah...',opts:['SaaS','PaaS','IaaS','FaaS'],ans:2,explain:'IaaS (Infrastructure as a Service) memberikan kendali penuh kepada perusahaan atas infrastruktur cloud-nya.'},
+    {q:'Salesforce dan Heroku adalah contoh layanan...',opts:['SaaS','IaaS','PaaS','BaaS'],ans:2,explain:'Salesforce dan Heroku adalah contoh PaaS (Platform as a Service) — platform untuk membuat dan deploy aplikasi.'},
+  ],
+  bab4:[
+    {q:'Dalam OOP PHP, Class berfungsi sebagai...',opts:['Tipe data','Blueprint untuk membuat Object','Nama database','File konfigurasi'],ans:1,explain:'Class adalah blueprint/cetak biru yang digunakan untuk membuat Object. Class menentukan karakteristik dan perilaku object.'},
+    {q:'$this dalam PHP OOP digunakan untuk...',opts:['Nama database','Referensi ke object saat ini','Variabel global','Fungsi bawaan PHP'],ans:1,explain:'$this adalah built-in variable yang menunjuk ke object yang sedang aktif saat ini (self-reference).'},
+    {q:'Modifier yang hanya mengizinkan akses dari class itu sendiri saja adalah...',opts:['public','protected','private','static'],ans:2,explain:'private hanya bisa diakses oleh class itu sendiri. public bisa diakses semua. protected bisa diakses class itu dan turunannya.'},
+    {q:'Perintah untuk memuat class dari file lain dalam PHP adalah...',opts:['import','using','include atau require','load_class'],ans:2,explain:'PHP menggunakan include() atau require() untuk memuat file class dari file lain. require() akan error jika file tidak ada.'},
+  ]
+};
+let exScores={bab1:{correct:0,answered:0},bab2:{correct:0,answered:0},bab3:{correct:0,answered:0},bab4:{correct:0,answered:0}};
+
+function renderExer(bab,containerId){
+  const c=$(containerId); if(!c) return;
+  c.innerHTML=exData[bab].map((q,qi)=>`
+    <div class="exer-item">
+      <div class="exer-head" style="color:var(--blue)"><span class="tag tag-blue">Soal ${qi+1}</span> ${q.q}</div>
+      <div class="exer-q">
+        <p>${q.q}</p>
+        <div class="exer-opts">
+          ${q.opts.map((o,oi)=>`<button class="exer-opt" id="ex_${bab}_${qi}_${oi}" onclick="answerEx('${bab}',${qi},${oi},${q.ans})" data-exg="${bab}_${qi}">
+            <span class="opt-ltr">${['A','B','C','D'][oi]}</span>${o}
+          </button>`).join('')}
+        </div>
+        <div class="exer-feedback" id="exf_${bab}_${qi}"></div>
+      </div>
+      <div class="exer-score-row">
+        <span id="exs_${bab}_${qi}" style="color:var(--text3)">Belum dijawab</span>
+      </div>
+    </div>`).join('');
+}
+function answerEx(bab,qi,chosen,correct){
+  const btns=document.querySelectorAll(`[data-exg="${bab}_${qi}"]`);
+  btns.forEach(b=>b.disabled=true);
+  btns[correct].classList.add('correct');
+  const ok=chosen===correct;
+  if(!ok) btns[chosen].classList.add('wrong');
+  const fb=$(`exf_${bab}_${qi}`);
+  fb.className='exer-feedback show '+(ok?'ef-ok':'ef-bad');
+  fb.textContent=ok?'✅ Benar! '+exData[bab][qi].explain:'❌ Kurang tepat. '+exData[bab][qi].explain;
+  const ss=$(`exs_${bab}_${qi}`);
+  ss.textContent=ok?'✅ Kamu menjawab dengan benar!':'❌ Jawaban kurang tepat';
+  ss.style.color=ok?'var(--green)':'var(--red)';
+}
+['bab1','bab2','bab3','bab4'].forEach(b=>renderExer(b,'exer'+b.charAt(0).toUpperCase()+b.slice(1)));
+
+// ── MAIN QUIZ ──
+const quizData=[
+  {cat:'Cloud',q:'Cloud Computing adalah gabungan pemanfaatan teknologi komputer dan pengembangan berbasis...',opts:['Bluetooth','Internet','Satelit','Kabel LAN'],ans:1},
+  {cat:'Cloud',q:'Perbedaan Public Cloud dan Private Cloud yang benar adalah...',opts:['Public lebih mahal','Public untuk umum di internet; Private hanya user tertentu','Private tidak butuh internet','Public hanya untuk pemerintah'],ans:1},
+  {cat:'Cloud',q:'Layanan Gmail adalah contoh penerapan cloud computing di bidang...',opts:['Kesehatan','Pemerintahan','Komunikasi / Email','Pendidikan'],ans:2},
+  {cat:'Cloud',q:'Manakah yang BUKAN manfaat Cloud Computing?',opts:['Akses file dari mana saja','Penyimpanan tanpa beli hardisk','Mencetak dokumen lebih cepat','Streaming audio video'],ans:2},
+  {cat:'Cloud',q:'Penyedia layanan cloud yang merupakan produk lokal Indonesia adalah...',opts:['Amazon Web Services','Microsoft Azure','IBM Cloud','Indonesian Cloud'],ans:3},
+  {cat:'Konsep',q:'Konsep pertama Cloud Computing yang paling mendasar adalah...',opts:['Penyimpanan hardisk','Internet sebagai Pusat Kontrol','Printer cloud','Bluetooth jaringan'],ans:1},
+  {cat:'Konsep',q:'Sebelum data masuk ke virtual cloud, data harus terlebih dahulu...',opts:['Dicetak','Diarsipkan fisik','Diubah menjadi format digital','Dikirim via faks'],ans:2},
+  {cat:'Konsep',q:'Contoh penerapan cloud computing di bidang kesehatan adalah...',opts:['Google Classroom','Microsoft Teams','Halodoc dan Alodokter','Adobe Photoshop'],ans:2},
+  {cat:'Konsep',q:'Keunggulan cloud terkait memori/penyimpanan adalah perusahaan...',opts:['Harus beli hardisk tiap bulan','Tidak perlu membeli hardisk tambahan','Butuh server fisik','Internet makin lambat'],ans:1},
+  {cat:'Konsep',q:'Google Drive dan Dropbox adalah contoh cloud computing untuk...',opts:['Streaming musik','Penyimpanan & berbagi file','Bermain game online','Editing video lokal'],ans:1},
+  {cat:'Layanan',q:'SaaS adalah singkatan dari...',opts:['System as a Service','Software as a Service','Storage as a Service','Server as a Service'],ans:1},
+  {cat:'Layanan',q:'Pengguna SaaS tidak perlu memahami teknis karena...',opts:['Mereka ahli IT','Semua dikelola penyedia layanan','Tidak ada teknis di cloud','Harganya sudah termasuk'],ans:1},
+  {cat:'Layanan',q:'IaaS menyediakan resource berupa...',opts:['Aplikasi siap pakai','Platform pengembangan','Server, jaringan, dan storage cloud','Hanya email saja'],ans:2},
+  {cat:'Layanan',q:'Karakteristik IaaS yang membedakannya adalah...',opts:['Tidak bisa diakses internet','Perusahaan memiliki kendali penuh infrastruktur','Harga tetap tidak berubah','Hanya bisa untuk satu user'],ans:1},
+  {cat:'Layanan',q:'PaaS terutama ditujukan untuk siapa?',opts:['Pengguna akhir umum','Admin server','Developer yang membangun aplikasi','Siswa sekolah'],ans:2},
+  {cat:'Layanan',q:'Salesforce dan Heroku adalah contoh layanan...',opts:['SaaS','IaaS','PaaS','DaaS'],ans:2},
+  {cat:'OOP',q:'Dalam OOP, Class berfungsi sebagai...',opts:['Tipe data khusus','Blueprint untuk membuat Object','Nama tabel database','File konfigurasi'],ans:1},
+  {cat:'OOP',q:'Object dalam OOP PHP adalah...',opts:['Nama file PHP','Instance/contoh dari sebuah Class','Fungsi global','Tipe data array'],ans:1},
+  {cat:'OOP',q:'Properties dalam OOP adalah...',opts:['Metode yang mengembalikan nilai','Karakteristik class yang menyerupai variabel','Nama database','Fungsi koneksi'],ans:1},
+  {cat:'OOP',q:'Modifier PUBLIC pada OOP PHP berarti dapat diakses oleh...',opts:['Hanya class itu sendiri','Class itu dan turunannya','Class manapun termasuk dari luar','Tidak bisa diakses'],ans:2},
+  {cat:'OOP',q:'Modifier PRIVATE berarti...',opts:['Semua class bisa akses','Class dan turunannya','Hanya class itu sendiri yang bisa akses','Tidak bisa digunakan'],ans:2},
+  {cat:'OOP',q:'$this dalam PHP OOP adalah...',opts:['Nama database aktif','Variabel superglobal','Referensi ke object yang sedang aktif','Fungsi bawaan PHP'],ans:2},
+  {cat:'OOP',q:'Untuk menggunakan class dari file lain dalam PHP, digunakan...',opts:['import','using','include atau require','load_class'],ans:2},
+  {cat:'OOP',q:'Fungsi setNama() dalam OOP digunakan untuk...',opts:['Menampilkan nilai nama','Menghapus property nama','Mengatur/menyimpan nilai ke property nama','Menghubungkan database'],ans:2},
+  {cat:'OOP',q:'Bobot Nilai Absen (na) dalam perhitungan nilai akhir modul OOP adalah...',opts:['40%','30%','20%','10%'],ans:3},
+];
+
+let cQ=0,score=0,timerInt=null,tLeft=30,userAns=[];
+function startQuiz(){
+  cQ=0;score=0;userAns=[];
+  $('quizStart').style.display='none';
+  $('quizArea').style.display='block';
+  $('resultCard').classList.remove('show');
+  $('resultCard').style.display='none';
+  showQ();
+}
+function showQ(){
+  const q=quizData[cQ];
+  $('qNum').textContent=cQ+1;
+  $('qProgress').style.width=((cQ+1)/25*100)+'%';
+  $('liveScore').textContent=score;
+  $('qFeedback').textContent='';
+  $('nextBtn').className='next-q-btn';
+  const cat=$('qCatPill');
+  cat.textContent=q.cat==='OOP'?'💻 OOP PHP':'☁️ Cloud Computing';
+  cat.className='q-cat-pill '+(q.cat==='OOP'?'qcp-oop':'qcp-cloud');
+  $('qText').textContent=q.q;
+  $('qOptions').innerHTML=q.opts.map((o,i)=>`<button class="q-opt" id="qo${i}" onclick="ansQ(${i})"><span class="q-ltr">${['A','B','C','D'][i]}</span>${o}</button>`).join('');
+  startTimer();
+}
+function startTimer(){
+  clearInterval(timerInt);tLeft=30;
+  $('timerNum').textContent=tLeft;
+  $('timerDisp').classList.remove('warn');
+  timerInt=setInterval(()=>{
+    tLeft--;$('timerNum').textContent=tLeft;
+    if(tLeft<=10)$('timerDisp').classList.add('warn');
+    if(tLeft<=0){clearInterval(timerInt);timeUp();}
+  },1000);
+}
+function timeUp(){
+  const q=quizData[cQ];
+  document.querySelectorAll('.q-opt').forEach((b,i)=>{b.disabled=true;if(i===q.ans)b.classList.add('correct');});
+  userAns.push({q:q.q.substring(0,55)+'...',chosen:'(Waktu Habis)',correct:q.opts[q.ans],ok:false});
+  $('qFeedback').innerHTML='<span class="qf-bad">⏰ Waktu habis! Jawaban: '+q.opts[q.ans]+'</span>';
+  $('nextBtn').className='next-q-btn show';
+}
+function ansQ(i){
+  clearInterval(timerInt);
+  const q=quizData[cQ],ok=i===q.ans;
+  document.querySelectorAll('.q-opt').forEach((b,j)=>{b.disabled=true;if(j===q.ans)b.classList.add('correct');});
+  if(!ok)$(`qo${i}`).classList.add('wrong');else score++;
+  userAns.push({q:q.q.substring(0,55)+'...',chosen:q.opts[i],correct:q.opts[q.ans],ok});
+  $('liveScore').textContent=score;
+  $('qFeedback').innerHTML=ok?'<span class="qf-ok">✅ Jawaban Benar! Bagus sekali!</span>':'<span class="qf-bad">❌ Kurang tepat. Jawaban: '+q.opts[q.ans]+'</span>';
+  $('nextBtn').className='next-q-btn show';
+}
+function nextQ(){cQ++;if(cQ>=25)showResult();else showQ();}
+function showResult(){
+  clearInterval(timerInt);
+  $('quizArea').style.display='none';
+  const rc=$('resultCard');rc.style.display='block';rc.classList.add('show');
+  const pct=Math.round(score/25*100);
+  $('scNum').textContent=score;
+  $('rsC').textContent=score;$('rsW').textContent=25-score;$('rsP').textContent=pct+'%';
+  let grade,msg,clr;
+  if(pct>=90){grade='A';msg='🎉 Luar Biasa! Penguasaan materi sangat baik!';clr='var(--green)';}
+  else if(pct>=80){grade='B';msg='👍 Bagus! Sedikit lagi untuk mencapai sempurna.';clr='var(--blue)';}
+  else if(pct>=70){grade='C';msg='😊 Cukup baik. Ulangi materi yang masih salah.';clr='var(--yellow)';}
+  else if(pct>=60){grade='D';msg='😅 Perlu belajar lebih giat lagi. Semangat!';clr='var(--orange)';}
+  else{grade='E';msg='😓 Pelajari ulang semua materi dari awal ya!';clr='var(--red)';}
+  const gb=$('gradeBadge');gb.textContent='Nilai: '+grade;gb.className='grade-badge grade-'+grade;
+  $('resMsg').textContent=msg;
+  $('scNum').style.color=clr;
+  const cf=$('circFg'),r=70,circ=2*Math.PI*r,offset=circ-(pct/100*circ);
+  cf.style.stroke=clr;
+  setTimeout(()=>{cf.style.strokeDashoffset=offset;},100);
+  const rb=$('revBody');rb.innerHTML='';
+  userAns.forEach((a,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${i+1}</td><td style="font-size:12px;max-width:180px;">${a.q}</td><td class="${a.ok?'rev-ok':'rev-bad'}">${a.chosen}</td><td class="rev-ok">${a.correct}</td><td style="font-size:16px">${a.ok?'✅':'❌'}</td>`;
+    rb.appendChild(tr);
+  });
+}
+function restartQuiz(){
+  $('resultCard').classList.remove('show');$('resultCard').style.display='none';
+  $('quizStart').style.display='block';
+}
+</script>
+</body>
+</html>
